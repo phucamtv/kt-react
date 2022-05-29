@@ -4,28 +4,20 @@ import { TimerPicker } from './player.timer-picker';
 import { PlayerButton } from './player.buttons';
 import { Grid } from '@mui/material';
 import { useState } from 'react';
+import { AppState } from './app';
 
 export interface AppControllerProps {
+	state: AppState,
 	speed: SpeedValue;
 	paused: boolean;
 	loop: null | LoopValue;
 	timer: null | number;
-	on?: (event: 'url', callback: (url: string) => void) => void;
 }
 
 export function AppControllers(props: AppControllerProps) {
 	const [speed, setSpeed] = useState<SpeedValue>(props.speed);
 	const [loop, setLoop] = useState<LoopValue>(props.loop);
 	const [timer, setTimer] = useState<null | number>(props.timer);
-	
-	if (props.on) {
-		props.on('url', (url: string) => {
-			// stop if playing
-			// start player new source
-			
-			console.log({ onChange: url });
-		});
-	}
 	
 	return (
 		<div>
@@ -45,7 +37,7 @@ export function AppControllers(props: AppControllerProps) {
 			
 			<Grid container spacing={2} alignItems="center">
 				<Grid item xs={12}>
-					<PlayerButton paused={props.paused} />
+					<PlayerButton paused={props.paused} state={props.state} />
 				</Grid>
 			</Grid>
 		</div>

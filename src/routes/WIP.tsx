@@ -1,13 +1,15 @@
-import { AppMain, AppMainProps } from '../components/player/main';
+import { AppMain, AppMainProps, AppState } from '../components/player/app';
 
 export function WIP() {
 	const props = {
-		address: 'TODO',
+		// location: 'TODO',
+		// voice: 'TODO',
+		// speed: 1,
+		// paused: false,
+		// timer: null,
+		// loop: null,
+		state: new AppState(),
 		voice: 'TODO',
-		speed: 1,
-		paused: false,
-		timer: null,
-		loop: null,
 	} as AppMainProps;
 	
 	return AppMain(props);

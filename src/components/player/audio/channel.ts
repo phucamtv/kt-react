@@ -1,11 +1,7 @@
 type Listener = (value: any) => void;
 
-type Topics = {
-	[name: string]: Listener[];
-};
-
 export class Channel {
-	private topics: Topics = {};
+	private topics: { [name: string]: Listener[] } = {};
 	private destroyed = false;
 	
 	getTopic(name: string) {
@@ -18,16 +14,9 @@ export class Channel {
 	
 	subscribe(topic: string, fn: Listener) {
 		const listeners = this.getTopic(topic);
-		
 		listeners.push(fn);
 		
-		const unsubscribe = () => {
-			const index = listeners.indexOf(fn);
-			
-			listeners.splice(index, 1);
-		};
-		
-		return unsubscribe;
+		return () => listeners.splice(listeners.indexOf(fn), 1);
 	}
 	
 	publish(topic: string, value: any) {

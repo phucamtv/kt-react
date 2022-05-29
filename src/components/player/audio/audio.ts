@@ -4,17 +4,17 @@ import { AudioState } from './audio.state';
 export class Audio {
 	private readonly ch: Channel;
 	private readonly el: HTMLVideoElement;
-	private state: AudioState;
+	private readonly state: AudioState;
 	private currentTime = 0;
 	
 	constructor() {
 		this.ch = new Channel();
-		this.state = { duration: 0, playing: false, volume: 0 };
+		this.state = { duration: 0, playing: false, volume: 0, url: '' };
 		this.el = document.createElement('video');
 		this.setup();
 	}
 	
-	private setState = (value: Partial<AudioState>) => this.ch.publish('change', { ...this.state, ...value });
+	private setState = (v: Partial<AudioState>) => this.ch.publish('change', { ...this.state, ...v });
 	private setup = () => {
 		this.el.addEventListener('durationchange', () => this.setState({ duration: this.el.duration }));
 		this.el.addEventListener('playing', () => this.setState({ playing: true }));
@@ -34,13 +34,14 @@ export class Audio {
 	
 	getElement = () => this.el;
 	getState = () => this.state;
+	url = () => this.state.url;
 	play = () => this.el.play();
 	isPlaying = () => !this.el.paused;
 	pause = () => this.el.pause();
 	getCurrentTime = () => this.currentTime;
 	volume = (value: number) => this.el.volume = value;
-	subscribe = (listener: (newState: AudioState) => void) => this.ch.subscribe('change', listener);
-	onChangeCurrentTime = (listener: (newCurrentTime: number) => void) => this.ch.subscribe('change-current-time', listener);
+	onChange = (callback: (v: AudioState) => void) => this.ch.subscribe('change', callback);
+	onChangeCurrentTime = (callback: (v: number) => void) => this.ch.subscribe('change-current-time', callback);
 	
 	seek(seconds: number) {
 		this.el.currentTime = seconds;
@@ -50,12 +51,12 @@ export class Audio {
 	
 	setUrl(url: string) {
 		this.el.setAttribute('src', url);
-		this.setState({ playing: false });
+		this.setState({ url, playing: false });
 	}
 	
-	onEnded(listener: () => void) {
-		this.el.addEventListener('ended', listener);
+	onEnded(callback: () => void) {
+		this.el.addEventListener('ended', callback);
 		
-		return () => this.el.removeEventListener('ended', listener);
+		return () => this.el.removeEventListener('ended', callback);
 	}
 }

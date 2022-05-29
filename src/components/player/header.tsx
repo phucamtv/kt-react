@@ -1,9 +1,9 @@
-import { VoicePicker } from './header.voice-picker';
-import { LocationPicker } from './location-picker.wrapper';
 import { AppBar, Toolbar, Typography } from '@mui/material';
+import { LocationPicker } from './location-picker/location-picker.wrapper';
+import { AppState } from './app';
 
 interface AppHeaderProps {
-	address: string;
+	state: AppState;
 	voice: string;
 }
 
@@ -12,10 +12,8 @@ export const AppHeader = (props: AppHeaderProps) => {
 		<AppBar position="static">
 			<Toolbar>
 				<Typography component="div" sx={{ flexGrow: 1 }}>
-					<LocationPicker address={props.address} />
+					<LocationPicker state={props.state} />
 				</Typography>
-				
-				<VoicePicker voice={props.voice} />
 			</Toolbar>
 		</AppBar>
 	);
