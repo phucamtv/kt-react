@@ -43,13 +43,13 @@ class Controller {
 			this.setUrl(audioUrl);
 		}
 		
-		this.audio.getElement().playbackRate = 4.0;
+		// For development
+		// this.audio.getElement().playbackRate = 4.0;
+		
 		await this.audio.play();
 	}
 	
 	onClick = async (location?: Location) => {
-		console.log({ onClick: location });
-		
 		if (this.audio.isPlaying()) {
 			this.audio.pause();
 			this.setState({ isDownloading: false, isPlaying: false });
@@ -59,7 +59,6 @@ class Controller {
 	};
 	
 	onEnded() {
-		console.log({ onEnded: true, me: this });
 		this.setState({ isDownloading: false, isPlaying: false });
 	}
 	

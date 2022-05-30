@@ -11,7 +11,7 @@ export const PlayerButton = (props: { state: AppState }) => {
 	return <div>
 		<Grid container spacing={0.5} justifyContent="center">
 			<Grid item xs={4}>
-				<ButtonPrev />
+				<ButtonPrev {...props} />
 			</Grid>
 			
 			<Grid item xs={4}>
