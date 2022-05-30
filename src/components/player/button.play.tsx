@@ -1,22 +1,23 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { IconButton } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import DownloadingIcon from '@mui/icons-material/Downloading';
-import { Audio } from './audio/audio';
 import { AppState, Location } from './app';
+import { Audio } from './audio/audio';
 
 class Controller {
-	private readonly audio: Audio;
+	private currentUrl?: string;
 	
 	constructor(
+		private readonly audio: Audio,
 		private readonly setState: (state: { isPlaying: boolean, isDownloading: boolean }) => void,
 	) {
-		this.audio = new Audio();
 	}
 	
-	destroy() {
-		this.audio.getElement().srcObject = null;
+	private setUrl(url: string) {
+		this.audio.setUrl(url);
+		this.currentUrl = url;
 	}
 	
 	async parseUrl(location: Location): Promise<null | string> {
@@ -29,7 +30,7 @@ class Controller {
 		if (audioUrl) {
 			const mp3Url = 'https://kinhthanh.httlvn.org/' + audioUrl.replaceAll('\\', '/');
 			
-			return (this.audio.url() !== mp3Url) ? mp3Url : null;
+			return (this.currentUrl !== mp3Url) ? mp3Url : null;
 		}
 		
 		return null;
@@ -39,9 +40,10 @@ class Controller {
 		const audioUrl = await this.parseUrl(location);
 		
 		if (audioUrl) {
-			this.audio.setUrl(audioUrl);
+			this.setUrl(audioUrl);
 		}
 		
+		this.audio.getElement().playbackRate = 4.0;
 		await this.audio.play();
 	}
 	
@@ -56,28 +58,52 @@ class Controller {
 		}
 	};
 	
+	onEnded() {
+		console.log({ onEnded: true, me: this });
+		this.setState({ isDownloading: false, isPlaying: false });
+	}
+	
 	onLocationChange = async (location?: Location, play = true) => {
 		if (!location) {
 			this.audio.pause();
 			this.setState({ isDownloading: false, isPlaying: false });
 		} else {
 			this.setState({ isDownloading: true, isPlaying: false });
-			await this.play(location!);
+			await this.play(location!)
+				.then(() => 'OK')
+				.catch(err => {
+				});
+			
 			this.setState({ isDownloading: false, isPlaying: true });
 		}
 	};
 }
 
-export function ButtonPlay(props: { state: AppState }) {
+export interface ButtonPlayProps {
+	state: AppState;
+	audio: Audio;
+}
+
+export function ButtonPlay(props: ButtonPlayProps) {
 	const [state, setState] = useState({ isPlaying: false, isDownloading: false });
 	const iconPlay = <PlayArrowIcon fontSize="large" color={state.isDownloading ? 'inherit' : 'primary'} />;
 	const iconPause = <PauseIcon fontSize="large" color="primary" />;
 	const iconDownload = <DownloadingIcon fontSize="large" color="primary" />;
-	let ctl: Controller = new Controller(setState);
 	
+	const ctl: Controller = new Controller(props.audio, setState);
 	const appState = props.state.get();
 	
-	props.state.onLocationChange(ctl.onLocationChange);
+	useEffect(
+		() => {
+			const cancel_1 = props.state.onLocationChange(ctl.onLocationChange);
+			const cancel_2 = props.audio.onEnded(() => ctl.onEnded());
+			
+			return () => {
+				cancel_1();
+				cancel_2();
+			};
+		},
+	);
 	
 	return <Fragment>
 		<IconButton onClick={() => ctl.onClick(appState)} disabled={state.isDownloading}>

@@ -8,8 +8,10 @@ export class Audio {
 	private currentTime = 0;
 	
 	constructor() {
+		console.log('<<< Audio >>>');
+		
 		this.ch = new Channel();
-		this.state = { duration: 0, playing: false, volume: 0, url: '' };
+		this.state = { duration: 0, playing: false, url: '' };
 		this.el = document.createElement('audio');
 		this.setup();
 	}
@@ -27,9 +29,6 @@ export class Audio {
 				this.ch.publish('change-current-time', this.currentTime);
 			}
 		});
-		
-		this.el.addEventListener('volumechange', () => this.setState({ volume: this.el.volume }));
-		this.setState({ volume: this.el.volume });
 	};
 	
 	getElement = () => this.el;
@@ -39,7 +38,6 @@ export class Audio {
 	isPlaying = () => !this.el.paused;
 	pause = () => this.el.pause();
 	getCurrentTime = () => this.currentTime;
-	volume = (value: number) => this.el.volume = value;
 	onChange = (callback: (v: AudioState) => void) => this.ch.subscribe('change', callback);
 	onChangeCurrentTime = (callback: (v: number) => void) => this.ch.subscribe('change-current-time', callback);
 	

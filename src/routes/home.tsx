@@ -1,6 +1,8 @@
-import { AppMain, AppMainProps, AppState } from '../components/player/app';
+import { AppMain, AppMainProps, AppState, Location } from '../components/player/app';
+import { books } from '../resources/@books';
+import { Fragment } from 'react';
 
-export function WIP() {
+export function HOME() {
 	const props = {
 		// location: 'TODO',
 		// voice: 'TODO',
@@ -8,9 +10,14 @@ export function WIP() {
 		// paused: false,
 		// timer: null,
 		// loop: null,
-		state: new AppState(),
+		state: new AppState({
+			book: books[18],
+			chapter: 23
+		} as Location),
 		voice: 'TODO',
 	} as AppMainProps;
 	
-	return AppMain(props);
+	return <Fragment>
+		<AppMain {...props} />
+	</Fragment>;
 }

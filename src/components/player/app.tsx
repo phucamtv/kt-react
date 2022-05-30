@@ -19,7 +19,6 @@ export class AppState {
 	}
 	
 	onLocationChange = (callback: (v?: Location) => void) => this.ch.subscribe('location', callback);
-	
 	get = () => this.state;
 	
 	set(state?: Location) {

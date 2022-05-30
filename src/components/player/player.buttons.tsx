@@ -3,8 +3,11 @@ import { AppState } from './app';
 import { ButtonPlay } from './button.play';
 import { ButtonNext } from './button.next';
 import { ButtonPrev } from './button.prev';
+import { Audio } from './audio/audio';
 
 export const PlayerButton = (props: { state: AppState }) => {
+	const audio = new Audio();
+	
 	return <div>
 		<Grid container spacing={0.5} justifyContent="center">
 			<Grid item xs={4}>
@@ -12,7 +15,7 @@ export const PlayerButton = (props: { state: AppState }) => {
 			</Grid>
 			
 			<Grid item xs={4}>
-				<ButtonPlay {...props} />
+				<ButtonPlay {...props} audio={audio} />
 			</Grid>
 			
 			<Grid item xs={4}>
