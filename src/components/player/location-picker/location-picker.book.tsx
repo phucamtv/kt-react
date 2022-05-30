@@ -25,7 +25,7 @@ export const BookPicker = (props: BookPickerProps) => {
 		<Grid container columns={10}>
 			{books.slice(0, 39).map(book =>
 				<Grid key={book.slug} item xs={1}>
-					<Button onClick={onClick(book.slug)}>
+					<Button onClick={onClick(book.slug)} style={{justifyContent: "flex-start"}}>
 						{book.slug.toUpperCase()}
 					</Button>
 				</Grid>,
@@ -36,7 +36,7 @@ export const BookPicker = (props: BookPickerProps) => {
 		<Grid container columns={10}>
 			{books.slice(39, 66).map(book =>
 				<Grid key={book.slug} item xs={1}>
-					<Button onClick={onClick(book.slug)}>
+					<Button onClick={onClick(book.slug)} style={{justifyContent: "flex-start"}}>
 						{book.slug.toUpperCase()}
 					</Button>
 				</Grid>,

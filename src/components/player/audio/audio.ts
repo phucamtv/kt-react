@@ -3,14 +3,14 @@ import { AudioState } from './audio.state';
 
 export class Audio {
 	private readonly ch: Channel;
-	private readonly el: HTMLVideoElement;
+	private readonly el: HTMLAudioElement;
 	private readonly state: AudioState;
 	private currentTime = 0;
 	
 	constructor() {
 		this.ch = new Channel();
 		this.state = { duration: 0, playing: false, volume: 0, url: '' };
-		this.el = document.createElement('video');
+		this.el = document.createElement('audio');
 		this.setup();
 	}
 	

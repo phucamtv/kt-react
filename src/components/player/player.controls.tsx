@@ -9,7 +9,6 @@ import { AppState } from './app';
 export interface AppControllerProps {
 	state: AppState,
 	speed: SpeedValue;
-	paused: boolean;
 	loop: null | LoopValue;
 	timer: null | number;
 }
@@ -37,7 +36,7 @@ export function AppControllers(props: AppControllerProps) {
 			
 			<Grid container spacing={2} alignItems="center">
 				<Grid item xs={12}>
-					<PlayerButton paused={props.paused} state={props.state} />
+					<PlayerButton state={props.state} />
 				</Grid>
 			</Grid>
 		</div>
