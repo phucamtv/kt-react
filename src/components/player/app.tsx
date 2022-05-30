@@ -4,9 +4,26 @@ import { Paper } from '@mui/material';
 import { Book } from '../../resources/@books';
 import { Channel } from './audio/channel';
 
-export interface Location {
-	book: Book,
-	chapter: number,
+export class Location {
+	constructor(
+		public book: Book,
+		public chapter: number
+	) {
+	}
+	
+	static async url(location: Location): Promise<null | string> {
+		const voice = 'VI1934';
+		const chapter = location.chapter > 9 ? location.chapter.toString() : '0' + location.chapter.toString();
+		const url = ['/resources', voice, location.book.position, chapter + '.json'].join('/');
+		const data = await fetch(url).then(response => response.json());
+		const audioUrl = data?.Audio[0] || '';
+		
+		if (audioUrl) {
+			return 'https://kinhthanh.httlvn.org/' + audioUrl.replaceAll('\\', '/');
+		}
+		
+		return null;
+	}
 }
 
 export class AppState {

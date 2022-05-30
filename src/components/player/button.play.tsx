@@ -1,116 +1,139 @@
-import { Fragment, useEffect, useState } from 'react';
-import { IconButton } from '@mui/material';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Button, IconButton, Slider } from '@mui/material';
+import { AppState, Location } from './app';
+import ReactPlayer from 'react-player';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import DownloadingIcon from '@mui/icons-material/Downloading';
-import { AppState, Location } from './app';
-import { Audio } from './audio/audio';
-
-class Controller {
-	private currentUrl?: string;
-	
-	constructor(
-		private readonly audio: Audio,
-		private readonly setState: (state: { isPlaying: boolean, isDownloading: boolean }) => void,
-	) {
-	}
-	
-	private setUrl(url: string) {
-		this.audio.setUrl(url);
-		this.currentUrl = url;
-	}
-	
-	async parseUrl(location: Location): Promise<null | string> {
-		const voice = 'VI1934';
-		const chapter = location.chapter > 9 ? location.chapter.toString() : '0' + location.chapter.toString();
-		const url = ['/resources', voice, location.book.position, chapter + '.json'].join('/');
-		const data = await fetch(url).then(response => response.json());
-		const audioUrl = data?.Audio[0] || '';
-		
-		if (audioUrl) {
-			const mp3Url = 'https://kinhthanh.httlvn.org/' + audioUrl.replaceAll('\\', '/');
-			
-			return (this.currentUrl !== mp3Url) ? mp3Url : null;
-		}
-		
-		return null;
-	}
-	
-	async play(location: Location) {
-		const audioUrl = await this.parseUrl(location);
-		
-		if (audioUrl) {
-			this.setUrl(audioUrl);
-		}
-		
-		// For development
-		// this.audio.getElement().playbackRate = 4.0;
-		
-		await this.audio.play();
-	}
-	
-	onClick = async (location?: Location) => {
-		if (this.audio.isPlaying()) {
-			this.audio.pause();
-			this.setState({ isDownloading: false, isPlaying: false });
-		} else {
-			await this.onLocationChange(location);
-		}
-	};
-	
-	onEnded() {
-		this.setState({ isDownloading: false, isPlaying: false });
-	}
-	
-	onLocationChange = async (location?: Location, play = true) => {
-		if (!location) {
-			this.audio.pause();
-			this.setState({ isDownloading: false, isPlaying: false });
-		} else {
-			this.setState({ isDownloading: true, isPlaying: false });
-			await this.play(location!)
-				.then(() => 'OK')
-				.catch(err => {
-				});
-			
-			this.setState({ isDownloading: false, isPlaying: true });
-		}
-	};
-}
 
 export interface ButtonPlayProps {
 	state: AppState;
-	audio: Audio;
+}
+
+interface AudioState {
+	url: string,
+	pip: boolean,
+	playing: boolean,
+	controls: boolean,
+	light: boolean,
+	volume: number,
+	muted: boolean,
+	played: number,
+	loaded: number,
+	duration: number,
+	playbackRate: number,
+	loop: boolean,
+	seeking: boolean,
+	downloading: boolean,
+	counter: number,
 }
 
 export function ButtonPlay(props: ButtonPlayProps) {
-	const [state, setState] = useState({ isPlaying: false, isDownloading: false });
-	const iconPlay = <PlayArrowIcon fontSize="large" color={state.isDownloading ? 'inherit' : 'primary'} />;
-	const iconPause = <PauseIcon fontSize="large" color="primary" />;
-	const iconDownload = <DownloadingIcon fontSize="large" color="primary" />;
+	let player: null | ReactPlayer = null;
+	const [state, setState] = useState({
+		url: '',
+		pip: false,
+		playing: false,
+		controls: false,
+		light: false,
+		volume: 0.8,
+		muted: false,
+		played: 0,
+		loaded: 0,
+		duration: 0,
+		playbackRate: 1.0,
+		loop: false,
+		seeking: false,
+		counter: 0,
+	});
 	
-	const ctl: Controller = new Controller(props.audio, setState);
-	const appState = props.state.get();
+	const onToggle = async () => {
+		if (!state.url) {
+			const location = props.state.get();
+			
+			if (location) {
+				const url = await Location.url(location) || '';
+				setState({ ...state, url, playing: !state.playing });
+				
+				return;
+			}
+		}
+		
+		setState({ ...state, playing: !state.playing });
+	};
+	
+	const onAppState = async (location?: Location) => {
+		if (!location) {
+			setState({ ...state, playing: false });
+		} else if (location) {
+			setState({ ...state, url: await Location.url(location) || '' });
+		}
+	};
+	
+	const onChangeCommitted = (event: React.SyntheticEvent | Event, played: number | number[]) => {
+		if (typeof played === 'number') {
+			setState({ ...state, playing: true, played });
+		}
+	};
 	
 	useEffect(
 		() => {
-			const cancel_1 = props.state.onLocationChange(ctl.onLocationChange);
-			const cancel_2 = props.audio.onEnded(() => ctl.onEnded());
+			const cancel = props.state.onLocationChange(onAppState);
+			const interval = setInterval(
+				function () {
+					if (player) {
+						const played = player.getCurrentTime();
+						const duration = player.getDuration();
+						
+						setState({ ...state, played, duration });
+					}
+				},
+				100,
+			);
 			
 			return () => {
-				cancel_1();
-				cancel_2();
+				cancel();
+				clearInterval(interval);
 			};
 		},
 	);
 	
+	const iconPlay = <PlayArrowIcon fontSize="large" color="primary" />;
+	const iconPause = <PauseIcon fontSize="large" color="primary" />;
+	
 	return <Fragment>
-		<IconButton onClick={() => ctl.onClick(appState)} disabled={state.isDownloading}>
-			{
-				state.isPlaying
-					? iconPause
-					: (state.isDownloading ? iconDownload : iconPlay)
-			}
-		</IconButton>
+		<IconButton onClick={onToggle}>{state.playing ? iconPause : iconPlay}</IconButton>
+		
+		<div>
+			<Slider
+				max={state.duration}
+				value={state.played}
+				aria-label="Seeker"
+				onChangeCommitted={(e, played) => {
+					if (typeof played === 'number') {
+						player!.seekTo(played);
+						setState({ ...state, played });
+					}
+				}}
+			/>
+		</div>
+		
+		<ul>
+			<li>Counter: {state.counter}</li>
+			<li>URL: <a href={state.url}>{state.url}</a></li>
+			<li>Playing: {state.playing ? 'yes' : 'no'}</li>
+			<li>Played: {state.played}</li>
+			<li>Duration: {state.duration}</li>
+			
+			<ReactPlayer
+				ref={(v) => player = v}
+				url={state.url}
+				loop={state.loop}
+				playsinline={true}
+				playing={state.playing}
+				playbackRate={state.playbackRate}
+				onEnded={() => setState({ ...state, playing: false })}
+				onReady={() => setState({ ...state, duration: player!.getDuration() })}
+				config={{ file: { forceAudio: true } }} />
+		</ul>
 	</Fragment>;
 }
