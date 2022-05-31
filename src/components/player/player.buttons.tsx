@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import { AppState } from './app';
+import { AppState } from './app.state';
 import { ButtonPlay } from './button.play';
 import { ButtonNext } from './button.next';
 import { ButtonPrev } from './button.prev';

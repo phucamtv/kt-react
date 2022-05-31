@@ -2,12 +2,13 @@ import { AppHeader } from './header';
 import { AppControllerProps, AppControllers } from './player.controls';
 import { Paper } from '@mui/material';
 import { Book } from '../../resources/@books';
-import { Channel } from './audio/channel';
+import { AppState } from './app.state';
 
 export class Location {
 	constructor(
 		public book: Book,
-		public chapter: number
+		public chapter: number,
+		public url: null | string = null,
 	) {
 	}
 	
@@ -23,24 +24,6 @@ export class Location {
 		}
 		
 		return null;
-	}
-}
-
-export class AppState {
-	private readonly ch: Channel;
-	private state?: Location;
-	
-	constructor(state?: Location) {
-		this.ch = new Channel();
-		this.state = state;
-	}
-	
-	onLocationChange = (callback: (v?: Location) => void) => this.ch.subscribe('location', callback);
-	get = () => this.state;
-	
-	set(state?: Location) {
-		this.state = state;
-		this.ch.publish('location', this.state);
 	}
 }
 

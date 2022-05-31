@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography } from '@mui/material';
-import { LocationPicker } from './location-picker/location-picker.wrapper';
-import { AppState } from './app';
+import { AppState } from './app.state';
+import { LocationPicker } from '../location-picker/location-picker.wrapper';
 
 interface AppHeaderProps {
 	state: AppState;

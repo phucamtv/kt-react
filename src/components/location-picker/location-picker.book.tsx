@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Button, Grid, Typography } from '@mui/material';
-import { books } from '../../../resources/@books';
 import { Selection } from './_.props';
+import { books } from '../../resources/@books';
 
 interface BookPickerProps {
 	setState: (value: Selection) => void;

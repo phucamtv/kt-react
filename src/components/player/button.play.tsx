@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Button, IconButton, Slider } from '@mui/material';
-import { AppState, Location } from './app';
+import { IconButton, Slider } from '@mui/material';
+import { Location } from './app';
 import ReactPlayer from 'react-player';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import { AppState } from './app.state';
 
 export interface ButtonPlayProps {
 	state: AppState;
@@ -23,8 +24,6 @@ interface AudioState {
 	playbackRate: number,
 	loop: boolean,
 	seeking: boolean,
-	downloading: boolean,
-	counter: number,
 }
 
 export function ButtonPlay(props: ButtonPlayProps) {
@@ -43,29 +42,15 @@ export function ButtonPlay(props: ButtonPlayProps) {
 		playbackRate: 1.0,
 		loop: false,
 		seeking: false,
-		counter: 0,
 	});
 	
-	const onToggle = async () => {
-		if (!state.url) {
-			const location = props.state.get();
-			
-			if (location) {
-				const url = await Location.url(location) || '';
-				setState({ ...state, url, playing: !state.playing });
-				
-				return;
-			}
-		}
-		
-		setState({ ...state, playing: !state.playing });
-	};
-	
 	const onAppState = async (location?: Location) => {
+		console.log({location});
+		
 		if (!location) {
 			setState({ ...state, playing: false });
 		} else if (location) {
-			setState({ ...state, url: await Location.url(location) || '' });
+			setState({ ...state, url: location.url || '' });
 		}
 	};
 	
@@ -101,7 +86,29 @@ export function ButtonPlay(props: ButtonPlayProps) {
 	const iconPause = <PauseIcon fontSize="large" color="primary" />;
 	
 	return <Fragment>
-		<IconButton onClick={onToggle}>{state.playing ? iconPause : iconPlay}</IconButton>
+		<IconButton
+			onClick={async () => {
+				if (!state.url) {
+					const location = props.state.get();
+					
+					if (location) {
+						const url = await Location.url(location) || '';
+						setState((state) => ({ ...state, url, playing: false }));
+						
+						await new Promise(resolve => setTimeout(resolve, 1000));
+						setState((state) => ({ ...state, playing: true }));
+						await new Promise(resolve => setTimeout(resolve, 1000));
+						setState((state) => ({ ...state, playing: false }));
+						await new Promise(resolve => setTimeout(resolve, 1000));
+						setState((state) => ({ ...state, playing: true }));
+						
+						return;
+					}
+				}
+				
+				setState({ ...state, playing: !state.playing });
+			}}
+		>{state.playing ? iconPause : iconPlay}</IconButton>
 		
 		<div>
 			<Slider
@@ -118,13 +125,12 @@ export function ButtonPlay(props: ButtonPlayProps) {
 		</div>
 		
 		<ul>
-			<li>Counter: {state.counter}</li>
 			<li>URL: <a href={state.url}>{state.url}</a></li>
 			<li>Playing: {state.playing ? 'yes' : 'no'}</li>
 			<li>Played: {state.played}</li>
 			<li>Duration: {state.duration}</li>
 			
-			<ReactPlayer
+			{!state.url ? 'NO PLAYER' : <ReactPlayer
 				ref={(v) => player = v}
 				url={state.url}
 				loop={state.loop}
@@ -133,7 +139,9 @@ export function ButtonPlay(props: ButtonPlayProps) {
 				playbackRate={state.playbackRate}
 				onEnded={() => setState({ ...state, playing: false })}
 				onReady={() => setState({ ...state, duration: player!.getDuration() })}
-				config={{ file: { forceAudio: true } }} />
+				onError={(err) => console.log({ err })}
+				config={{ file: { forceAudio: true } }} />}
+		
 		</ul>
 	</Fragment>;
 }

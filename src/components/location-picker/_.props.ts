@@ -1,5 +1,5 @@
-import { Book } from '../../../resources/@books';
-import { AppState } from '../app';
+import { Book } from '../../resources/@books';
+import { AppState } from '../player/app.state';
 
 export interface LocationPickerProps {
 	state: AppState;

@@ -4,7 +4,7 @@ import { TimerPicker } from './player.timer-picker';
 import { PlayerButton } from './player.buttons';
 import { Grid } from '@mui/material';
 import { useState } from 'react';
-import { AppState } from './app';
+import { AppState } from './app.state';
 
 export interface AppControllerProps {
 	state: AppState,

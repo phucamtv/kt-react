@@ -1,19 +1,18 @@
-import { AppMain, AppMainProps, AppState, Location } from '../components/player/app';
+import { AppMain, AppMainProps, Location } from '../components/player/app';
 import { books } from '../resources/@books';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import { AppState } from '../components/player/app.state';
 
 export function HOME() {
+	const appState = new AppState();
+	
+	useEffect(() => {
+		const defaultLocation = new Location(books[18], 23);
+		appState.set(defaultLocation);
+	}, []);
+	
 	const props = {
-		// location: 'TODO',
-		// voice: 'TODO',
-		// speed: 1,
-		// paused: false,
-		// timer: null,
-		// loop: null,
-		state: new AppState({
-			book: books[18],
-			chapter: 23
-		} as Location),
+		state: appState,
 		voice: 'TODO',
 	} as AppMainProps;
 	
