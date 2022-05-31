@@ -22,7 +22,7 @@ export const BookPicker = (props: BookPickerProps) => {
 	return <Fragment>
 		<Typography variant="h6" component="div">Cựu Ước</Typography>
 		
-		<Grid container columns={10}>
+		<Grid container columns={5}>
 			{books.slice(0, 39).map(book =>
 				<Grid key={book.slug} item xs={1}>
 					<Button onClick={onClick(book.slug)} style={{justifyContent: "flex-start"}}>
@@ -33,7 +33,7 @@ export const BookPicker = (props: BookPickerProps) => {
 		</Grid>
 		
 		<Typography variant="h6">Tân Ước</Typography>
-		<Grid container columns={10}>
+		<Grid container columns={5}>
 			{books.slice(39, 66).map(book =>
 				<Grid key={book.slug} item xs={1}>
 					<Button onClick={onClick(book.slug)} style={{justifyContent: "flex-start"}}>

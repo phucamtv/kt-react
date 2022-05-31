@@ -7,7 +7,7 @@ export function HOME() {
 	const appState = new AppState();
 	
 	useEffect(() => {
-		const defaultLocation = new Address(books[18], 23);
+		const defaultLocation = new Address(books[1], 20);
 		appState.setAddress(defaultLocation);
 	}, []);
 	

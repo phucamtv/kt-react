@@ -20,6 +20,7 @@ export class AppState {
 	onSpeed = (callback: (v?: SpeedValue) => void) => this.ch.subscribe('speed', callback);
 	
 	getSpeed = () => this.speed;
+	
 	setSpeed(v?: SpeedValue) {
 		this.speed = v;
 		this.ch.publish('speed', this.speed);
@@ -30,7 +31,11 @@ export class AppState {
 	
 	async setAddress(address?: Address) {
 		if (address) {
-			address.url = await Address.url(address) || null;
+			const info = await Address.info(address) || null;
+			if (info) {
+				address.url = info.url;
+				address.text = info.text;
+			}
 		}
 		
 		this.address = address;

@@ -1,10 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { IconButton, Slider } from '@mui/material';
+import { Card, Divider, Grid, IconButton, List, ListItem, Paper, Slider } from '@mui/material';
 import { Address } from './app';
 import ReactPlayer from 'react-player';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { AppState } from './app.state';
+
 
 export interface ButtonPlayProps {
 	state: AppState;
@@ -30,6 +31,7 @@ export function ButtonPlay(props: ButtonPlayProps) {
 	let player: null | ReactPlayer = null;
 	const [state, setState] = useState({
 		url: '',
+		text: '',
 		pip: false,
 		playing: false,
 		controls: false,
@@ -48,7 +50,7 @@ export function ButtonPlay(props: ButtonPlayProps) {
 		if (!location) {
 			setState({ ...state, playing: false });
 		} else if (location) {
-			setState({ ...state, url: location.url || '' });
+			setState({ ...state, url: location.url || '', text: location.text || '' });
 		}
 	};
 	
@@ -82,21 +84,13 @@ export function ButtonPlay(props: ButtonPlayProps) {
 	const iconPlay = <PlayArrowIcon fontSize="large" color="primary" />;
 	const iconPause = <PauseIcon fontSize="large" color="primary" />;
 	
-	return <Fragment>
+	return [
 		<IconButton
 			onClick={async () => {
 				if (!state.url) {
 					const location = props.state.getAddress();
 					
 					if (location) {
-						const url = await Address.url(location) || '';
-						setState((state) => ({ ...state, url, playing: false }));
-						
-						await new Promise(resolve => setTimeout(resolve, 1000));
-						setState((state) => ({ ...state, playing: true }));
-						await new Promise(resolve => setTimeout(resolve, 1000));
-						setState((state) => ({ ...state, playing: false }));
-						await new Promise(resolve => setTimeout(resolve, 1000));
 						setState((state) => ({ ...state, playing: true }));
 						
 						return;
@@ -105,28 +99,31 @@ export function ButtonPlay(props: ButtonPlayProps) {
 				
 				setState({ ...state, playing: !state.playing });
 			}}
-		>{state.playing ? iconPause : iconPlay}</IconButton>
-		
-		<div>
-			<Slider
-				max={state.duration}
-				value={state.played}
-				aria-label="Seeker"
-				onChangeCommitted={(e, played) => {
-					if (typeof played === 'number') {
-						player!.seekTo(played);
-						setState({ ...state, played });
-					}
-				}}
-			/>
-		</div>
-		
-		<ul>
-			<li>URL: <a href={state.url}>{state.url}</a></li>
-			<li>Playing: {state.playing ? 'yes' : 'no'}</li>
-			<li>Played: {state.played}</li>
-			<li>Duration: {state.duration}</li>
-			<li>Rate: {state.playbackRate}</li>
+		>{state.playing ? iconPause : iconPlay}</IconButton>,
+		<Slider
+			max={state.duration}
+			value={state.played}
+			aria-label="Seeker"
+			size="small"
+			onChangeCommitted={(e, played) => {
+				if (typeof played === 'number') {
+					player!.seekTo(played);
+					setState({ ...state, played });
+				}
+			}}
+		/>,
+		<Fragment>
+			<div dangerouslySetInnerHTML={{ __html: state.text }} />
+			<Divider />
+			
+			<List>
+				<ListItem>URL: <a href={state.url}>{state.url}</a></ListItem>
+				<ListItem>Playing: {state.playing ? 'yes' : 'no'}</ListItem>
+				<ListItem>Played: {state.played}</ListItem>
+				<ListItem>Duration: {state.duration}</ListItem>
+				<ListItem>Rate: {state.playbackRate}</ListItem>
+			</List>
+			
 			
 			{!state.url ? 'NO PLAYER' : <ReactPlayer
 				ref={(v) => player = v}
@@ -139,7 +136,6 @@ export function ButtonPlay(props: ButtonPlayProps) {
 				onReady={() => setState({ ...state, duration: player!.getDuration() })}
 				onError={(err) => console.log({ err })}
 				config={{ file: { forceAudio: true } }} />}
-		
-		</ul>
-	</Fragment>;
+		</Fragment>,
+	];
 }
