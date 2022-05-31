@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { IconButton, Slider } from '@mui/material';
-import { Location } from './app';
+import { Address } from './app';
 import ReactPlayer from 'react-player';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -44,9 +44,7 @@ export function ButtonPlay(props: ButtonPlayProps) {
 		seeking: false,
 	});
 	
-	const onAppState = async (location?: Location) => {
-		console.log({location});
-		
+	const onLocation = async (location?: Address) => {
 		if (!location) {
 			setState({ ...state, playing: false });
 		} else if (location) {
@@ -54,15 +52,13 @@ export function ButtonPlay(props: ButtonPlayProps) {
 		}
 	};
 	
-	const onChangeCommitted = (event: React.SyntheticEvent | Event, played: number | number[]) => {
-		if (typeof played === 'number') {
-			setState({ ...state, playing: true, played });
-		}
-	};
-	
 	useEffect(
 		() => {
-			const cancel = props.state.onLocationChange(onAppState);
+			const addressListener = props.state.onAddress(onLocation);
+			const speedListener = props.state.onSpeed((playbackRate) => {
+				setState({ ...state, playbackRate: playbackRate || 1.0 });
+			});
+			
 			const interval = setInterval(
 				function () {
 					if (player) {
@@ -76,7 +72,8 @@ export function ButtonPlay(props: ButtonPlayProps) {
 			);
 			
 			return () => {
-				cancel();
+				addressListener();
+				speedListener();
 				clearInterval(interval);
 			};
 		},
@@ -89,10 +86,10 @@ export function ButtonPlay(props: ButtonPlayProps) {
 		<IconButton
 			onClick={async () => {
 				if (!state.url) {
-					const location = props.state.get();
+					const location = props.state.getAddress();
 					
 					if (location) {
-						const url = await Location.url(location) || '';
+						const url = await Address.url(location) || '';
 						setState((state) => ({ ...state, url, playing: false }));
 						
 						await new Promise(resolve => setTimeout(resolve, 1000));
@@ -129,6 +126,7 @@ export function ButtonPlay(props: ButtonPlayProps) {
 			<li>Playing: {state.playing ? 'yes' : 'no'}</li>
 			<li>Played: {state.played}</li>
 			<li>Duration: {state.duration}</li>
+			<li>Rate: {state.playbackRate}</li>
 			
 			{!state.url ? 'NO PLAYER' : <ReactPlayer
 				ref={(v) => player = v}

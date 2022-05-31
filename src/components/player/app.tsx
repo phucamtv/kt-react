@@ -1,10 +1,10 @@
 import { AppHeader } from './header';
-import { AppControllerProps, AppControllers } from './player.controls';
+import { PlayerControllersProps, PlayerControllers } from './player.controls';
 import { Paper } from '@mui/material';
 import { Book } from '../../resources/@books';
 import { AppState } from './app.state';
 
-export class Location {
+export class Address {
 	constructor(
 		public book: Book,
 		public chapter: number,
@@ -12,7 +12,7 @@ export class Location {
 	) {
 	}
 	
-	static async url(location: Location): Promise<null | string> {
+	static async url(location: Address): Promise<null | string> {
 		const voice = 'VI1934';
 		const chapter = location.chapter > 9 ? location.chapter.toString() : '0' + location.chapter.toString();
 		const url = ['/resources', voice, location.book.position, chapter + '.json'].join('/');
@@ -27,7 +27,7 @@ export class Location {
 	}
 }
 
-export interface AppMainProps extends AppControllerProps {
+export interface AppMainProps extends PlayerControllersProps {
 	state: AppState;
 	voice: string;
 }
@@ -38,7 +38,7 @@ export function AppMain(props: AppMainProps) {
 			<AppHeader voice={props.voice} state={props.state} />
 			
 			<Paper sx={{ maxWidth: '100%', padding: '1em' }} square>
-				<AppControllers {...props} />
+				<PlayerControllers {...props} />
 			</Paper>
 		</div>
 	);

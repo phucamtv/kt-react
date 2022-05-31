@@ -5,6 +5,7 @@ import { BookPicker } from './location-picker.book';
 import { ChapterPicker } from './location-picker.chapter';
 import { Header } from './header';
 import { LocationPickerProps, Selection } from './_.props';
+import { Address } from '../player/app';
 
 export const QuickLocationPicker = (props: LocationPickerProps) => {
 	const [open, setOpen] = useState<boolean>(false);
@@ -15,11 +16,11 @@ export const QuickLocationPicker = (props: LocationPickerProps) => {
 	};
 	const onClose = () => setOpen(false);
 	
-	const state = props.state.get();
+	const state = props.state.getAddress();
 	const labelDefault = 'Chọn sách';
 	const [label, setLabel] = useState(!state ? labelDefault : (state.book.label + ' ' + state.chapter));
 	
-	props.state.onLocationChange(selection => {
+	props.state.onAddress(selection => {
 		if (selection) {
 			setLabel(selection.book.label + ' ' + selection.chapter);
 		} else {
@@ -41,15 +42,19 @@ export const QuickLocationPicker = (props: LocationPickerProps) => {
 						? <BookPicker setState={setSelection} />
 						: <ChapterPicker
 							state={selection}
-							setSelection={(selection: Selection, close: boolean): void => {
-								selection.screen = null;
-								setSelection(selection);
-								if (close) {
-									setOpen(false);
+							setSelection={
+								async (selection: Selection, close: boolean): Promise<void> => {
+									selection.screen = null;
+									setSelection(selection);
+									if (close) {
+										setOpen(false);
+									}
+									
+									const location = { book: selection.book!, chapter: selection.chapter! } as Address;
+									
+									await props.state.setAddress(location);
 								}
-								
-								props.state.set({ book: selection.book!, chapter: selection.chapter! });
-							}} />
+							} />
 				}
 			</Paper>
 		</Dialog>

@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
+import { AppState } from './app.state';
 
 export type SpeedValue = 0.75 | 1 | 1.25 | 1.5 | 1.75 | 2;
 const options: Array<SpeedValue> = [0.75, 1, 1.25, 1.5, 1.75, 2];
 
 type SpeedPickerProps = {
-	value: SpeedValue,
-	setValue: (value: SpeedValue) => void
+	state: AppState
 };
 
 export const SpeedPicker = (props: SpeedPickerProps) => {
+	const [speed, setSpeed] = useState(props.state.getSpeed());
+	props.state.onSpeed((v) => setSpeed(v));
+	
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const onCloseDialog = () => setAnchorEl(null);
@@ -18,14 +21,15 @@ export const SpeedPicker = (props: SpeedPickerProps) => {
 	const onSelect = (value: SpeedValue) => {
 		return () => {
 			setAnchorEl(null);
-			props.setValue(value);
+			
+			props.state.setSpeed(value);
 		};
 	};
 	
 	return <div>
 		<IconButton onClick={onToggleDialog}>
 			<SlowMotionVideoIcon />
-			{props.value}x
+			{speed}x
 		</IconButton>
 		
 		<Menu anchorEl={anchorEl} open={open} onClose={onCloseDialog}>

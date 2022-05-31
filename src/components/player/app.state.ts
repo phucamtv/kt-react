@@ -1,30 +1,39 @@
 import { Channel } from './audio/channel';
-import { Location } from './app';
+import { Address } from './app';
+import { SpeedValue } from './button.speed';
 
 export class AppState {
 	private readonly ch: Channel;
-	private state?: Location;
+	private address?: Address;
+	private speed?: SpeedValue = 1;
 	
 	// voice: 'TODO',
-	// speed: 1,
 	// paused: false,
 	// timer: null,
 	// loop: null,
 	
-	constructor(state?: Location) {
+	constructor(state?: Address) {
 		this.ch = new Channel();
-		this.state = state;
+		this.address = state;
 	}
 	
-	onLocationChange = (callback: (v?: Location) => void) => this.ch.subscribe('location', callback);
-	get = () => this.state;
+	onSpeed = (callback: (v?: SpeedValue) => void) => this.ch.subscribe('speed', callback);
 	
-	async set(state?: Location) {
-		if (state) {
-			state.url = await Location.url(state) || null;
+	getSpeed = () => this.speed;
+	setSpeed(v?: SpeedValue) {
+		this.speed = v;
+		this.ch.publish('speed', this.speed);
+	}
+	
+	onAddress = (callback: (v?: Address) => void) => this.ch.subscribe('address', callback);
+	getAddress = () => this.address;
+	
+	async setAddress(address?: Address) {
+		if (address) {
+			address.url = await Address.url(address) || null;
 		}
 		
-		this.state = state;
-		this.ch.publish('location', this.state);
+		this.address = address;
+		this.ch.publish('address', this.address);
 	}
 }

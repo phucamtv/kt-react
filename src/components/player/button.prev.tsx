@@ -5,11 +5,11 @@ import { AppState } from './app.state';
 
 export function ButtonPrev(props: { state: AppState }) {
 	const onClick = async () => {
-		const state = props.state.get();
+		const state = props.state.getAddress();
 		
 		if (state && state.chapter > 1) {
 			state.chapter -= 1;
-			await props.state.set(state);
+			await props.state.setAddress(state);
 		}
 	};
 	
