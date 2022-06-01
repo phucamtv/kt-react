@@ -24,7 +24,7 @@ export const LoopPicker = (props: LoopPickerProps) => {
 	};
 	
 	return <div>
-		<IconButton onClick={toggleDialog}>
+		<IconButton onClick={toggleDialog} size='small'>
 			<RepeatIcon /> {props.value || nilState}
 		</IconButton>
 		

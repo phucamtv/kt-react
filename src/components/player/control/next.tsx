@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { IconButton } from '@mui/material';
-import { AppState } from './app.state';
+import { AppState } from '../app.state';
 
 export function ButtonNext(props: { state: AppState }) {
 	const onClick = () => {
@@ -16,7 +16,7 @@ export function ButtonNext(props: { state: AppState }) {
 	
 	return <Fragment>
 		<IconButton onClick={onClick}>
-			<SkipNextIcon fontSize="large" color="primary" />
+			<SkipNextIcon fontSize="small" color="primary" />
 		</IconButton>
 	</Fragment>;
 }

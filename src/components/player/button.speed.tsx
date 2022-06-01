@@ -27,7 +27,7 @@ export const SpeedPicker = (props: SpeedPickerProps) => {
 	};
 	
 	return <div>
-		<IconButton onClick={onToggleDialog}>
+		<IconButton onClick={onToggleDialog} size="small">
 			<SlowMotionVideoIcon />
 			{speed}x
 		</IconButton>
