@@ -1,6 +1,7 @@
 import { Channel } from './audio/channel';
 import { Address } from './app';
 import { SpeedValue } from './button.speed';
+import { books } from '../../resources/@books';
 
 export class AppState {
 	private readonly ch: Channel;
@@ -28,6 +29,41 @@ export class AppState {
 	
 	onAddress = (callback: (v?: Address) => void) => this.ch.subscribe('address', callback);
 	getAddress = () => this.address;
+	
+	async prev() {
+		if (!this.address) {
+			return;
+		}
+		
+		const address = this.address;
+		if (address.chapter != 1) {
+			address.chapter -= 1;
+		} else {
+			const position = parseInt(address.book.position);
+			address.book = books[position - 2] || books[65];
+			address.chapter = address.book.chapters;
+		}
+		
+		await this.setAddress(address);
+	}
+	
+	async next() {
+		if (!this.address) {
+			return;
+		}
+		
+		const address = this.address;
+		if (address.chapter < address.book.chapters) {
+			address.chapter += 1;
+		} else {
+			const position = parseInt(address.book.position);
+			
+			address.book = books[position] || books[0];
+			address.chapter = 1;
+		}
+		
+		await this.setAddress(address);
+	}
 	
 	async setAddress(address?: Address) {
 		if (address) {

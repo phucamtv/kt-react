@@ -15,8 +15,6 @@ export function ButtonPlay(props: ButtonPlayProps) {
 	let player: null | ReactPlayer = null;
 	const [state, setState] = useState<AudioState>(defaultAudioState);
 	
-	// setState({...state, counter: sta});
-	
 	useEffect(
 		() => playEffect(player, props.state, setState),
 		[state],
@@ -34,9 +32,9 @@ export function ButtonPlay(props: ButtonPlayProps) {
 				<CircularProgress
 					thickness={1}
 					variant="determinate"
-					size={60}
-					value={state.played}
-					sx={{ position: 'absolute', top: -1, left: -2, zIndex: -1 }}
+					size={58}
+					value={!state.duration ? 0 : state.played * 100 / state.duration}
+					sx={{ position: 'absolute', top: -1, left: -1, zIndex: -1 }}
 				/>
 			</Box>
 		</Fragment>,
@@ -71,7 +69,8 @@ export function ButtonPlay(props: ButtonPlayProps) {
 				playsinline={true}
 				playing={state.playing}
 				playbackRate={state.playbackRate}
-				onEnded={() => setState({ ...state, playing: false })}
+				// onEnded={() => setState({ ...state, playing: false })}
+				onEnded={() => props.state.next()}
 				onReady={() => setState({ ...state, duration: player!.getDuration() })}
 				onError={(err) => console.log({ err })}
 				config={{ file: { forceAudio: true } }} />}
