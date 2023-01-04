@@ -3,7 +3,7 @@ import { books } from '../resources/@books';
 import { Fragment, useEffect } from 'react';
 import { AppState } from '../components/player/app.state';
 
-export function HOME() {
+export function App() {
 	const appState = new AppState();
 	
 	useEffect(() => {
@@ -11,10 +11,7 @@ export function HOME() {
 		appState.setAddress(defaultLocation);
 	}, []);
 	
-	const props = {
-		state: appState,
-		voice: 'TODO',
-	} as AppMainProps;
+	const props = { state: appState, voice: 'TODO', } as AppMainProps;
 	
 	return <Fragment>
 		<AppMain {...props} />

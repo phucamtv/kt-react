@@ -42,17 +42,13 @@ export function PlayerControllers(props: PlayerControllersProps) {
 			<Toolbar>
 				{prevButton}
 				
+				<SpeedPicker state={props.state} />
+				
 				<StyledPlayButton color="inherit">
 					{playButton}
-					
-					<Box sx={{ position: 'absolute', top: 24, left: -77, zIndex: -1 }}>
-						<SpeedPicker state={props.state} />
-					</Box>
-					
-					<Box sx={{ position: 'absolute', top: 24, right: -170, zIndex: -1, width: 200 }}>
-						<LoopPicker value={loop} setValue={setLoop} />
-					</Box>
 				</StyledPlayButton>
+				
+				<LoopPicker value={loop} setValue={setLoop} />
 				
 				<Box sx={{ flexGrow: 1 }} />
 				
