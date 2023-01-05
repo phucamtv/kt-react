@@ -9,6 +9,7 @@ export enum Language {EN = "EN", VI = "VI"}
 export interface BookInfo {
     code: string;
     chapters: number;
+    name: Map<Language, string>;
 }
 
 export interface Location {

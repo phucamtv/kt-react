@@ -26,10 +26,13 @@ export const AudioPlayer = () => {
     );
     
     return <>
-        <h3>AudioPlayer</h3>
+        <h2>AudioPlayer</h2>
+        <hr />
         
         <ul>
             {links.map(link => <li key={link}>{link}</li>)}
         </ul>
+    
+        <hr />
     </>;
 };

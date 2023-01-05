@@ -1,7 +1,8 @@
 import { useScreen } from "../../store/store.screen";
 import shallow from "zustand/shallow";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { selectLocation } from "../../store/entities";
+import { Container } from "@mui/material";
 
 function ReadingContent(props: { loading: boolean }) {
     const loading = <div>loading…</div>;
@@ -12,9 +13,9 @@ function ReadingContent(props: { loading: boolean }) {
     }
     
     return <>
-        <div>
+        <Container style={{ padding: "20px", overflow: "hidden" }}>
             {!content ? loading : <div dangerouslySetInnerHTML={{ __html: content }} />}
-        </div>
+        </Container>
     </>;
 }
 
