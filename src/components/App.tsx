@@ -11,14 +11,14 @@ import { DebugController } from "./debug";
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#3e2723',
-            light: "#6a4f4b",
-            dark: "#1b0000"
+            main: '#114954',
+            light: "#437580",
+            dark: "#00212b"
         },
         secondary: {
-            main: '#d7ccc8',
-            light: "#fffffb",
-            dark: "#a69b97"
+            main: '#437580',
+            light: "#72a4af",
+            dark: "#124954"
         },
     },
 });
