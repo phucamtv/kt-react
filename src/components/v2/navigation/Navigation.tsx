@@ -1,10 +1,10 @@
 import shallow from "zustand/shallow";
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import BookIcon from "@mui/icons-material/Book";
-import { useConfig } from "../../../store/store.config";
 import { useScreen } from "../../../store/store.screen";
 import { useNavStore } from "./store";
 import { NavigationPopup } from "./NavigationPopup";
+import { books } from "../../../store/books";
 
 const NavigationLabel = () => {
     const location = useScreen(
@@ -17,7 +17,6 @@ const NavigationLabel = () => {
         shallow,
     );
     
-    const books = useConfig(state => state.books);
     const book = books.get(location.book)!;
     const bookName = book.name.get(location.language);
     const toggleActive = useNavStore(state => state.toggleActive);

@@ -1,4 +1,4 @@
-import { Screen, ScreenSetter } from "./entities";
+import { ScreenSetter } from "./entities";
 
 export type AudioContext = {
     playing: boolean,
@@ -7,7 +7,6 @@ export type AudioContext = {
     percent: number,
     volume: number
 };
-
 
 export interface PlayerAPI {
     toggle(): void;

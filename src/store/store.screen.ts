@@ -1,10 +1,9 @@
-import { Language, Location, Screen, ScreenSetter, Translation } from "./entities";
-import { useConfig } from "./store.config";
+import { Language, Screen, ScreenSetter, Translation } from "./entities";
 import { createPlayerAPI } from "./api.audio";
 import { createNavigationAPI } from "./api.navigate";
 import create from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-import { fetchAPI, Resource } from "./api.fetch";
+import { fetchAPI } from "./api.fetch";
 
 export const createScreen = (set: ScreenSetter): Screen => {
     const props: Partial<Screen> = {

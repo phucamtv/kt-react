@@ -1,5 +1,5 @@
-import { Location, Screen, ScreenSetter } from "./entities";
-import { useConfig } from "./store.config";
+import { Screen, ScreenSetter } from "./entities";
+import { books } from "./books";
 
 export interface NavigationAPI {
     prev(): void;
@@ -10,8 +10,6 @@ export interface NavigationAPI {
 }
 
 export function createNavigationAPI(setter: ScreenSetter): NavigationAPI {
-    const config = useConfig.getState();
-    const books = config.books;
     const bookNumbers = Array.from(books.keys());
     
     return {

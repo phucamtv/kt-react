@@ -1,11 +1,10 @@
-import { useConfig } from "../../../store/store.config";
 import { useScreen } from "../../../store/store.screen";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useNavStore } from "./store";
+import { books } from "../../../store/books";
 
 export const PickOneBook = () => {
     const lang = useScreen(state => state.language);
-    const books = useConfig(state => state.books);
     const set = useNavStore(state => state.setBook);
     
     const items = Array

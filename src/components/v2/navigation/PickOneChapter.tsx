@@ -1,12 +1,10 @@
 import { useScreen } from "../../../store/store.screen";
-import { useConfig } from "../../../store/store.config";
 import { useNavStore } from "./store";
 import { Button, Grid } from "@mui/material";
-import { Location } from "../../../store/entities";
+import { books } from "../../../store/books";
 
 export const PickOneChapter = () => {
     const lang = useScreen(state => state.language);
-    const books = useConfig(state => state.books);
     const bookNumber = useNavStore(state => state.book!);
     const book = books.get(bookNumber)!;
     const chapters = new Array<number>(book.chapters).keys();
