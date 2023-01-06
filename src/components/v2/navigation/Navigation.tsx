@@ -1,51 +1,56 @@
-import shallow from "zustand/shallow";
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
-import BookIcon from "@mui/icons-material/Book";
+import { AppBar, Box, IconButton, Toolbar } from "@mui/material";
 import { useScreen } from "../../../store/store.screen";
-import { useNavStore } from "./store";
-import { NavigationPopup } from "./NavigationPopup";
-import { books } from "../../../store/books";
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
+import React from "react";
+import { styled } from "@mui/material/styles";
+import Fab from "@mui/material/Fab";
+import PauseIcon from "@mui/icons-material/Pause";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
-const NavigationLabel = () => {
-    const location = useScreen(
-        state => ({
-            language: state.language,
-            translation: state.translation,
-            book: state.book,
-            chapter: state.chapter,
-        }),
-        shallow,
-    );
-    
-    const book = books.get(location.book)!;
-    const bookName = book.name.get(location.language);
-    const toggleActive = useNavStore(state => state.toggleActive);
-    
-    return <IconButton onClick={toggleActive} color="inherit">
-        <BookIcon /> {bookName} {location.chapter}
-    </IconButton>;
-};
+const StyledPlayButton = styled(Fab)({
+    position: "absolute",
+    zIndex: 1,
+    top: -15,
+    left: 0,
+    right: 0,
+    margin: "0 auto",
+});
 
-const Controller = () => {
-    const api = useScreen(state => state.navigation);
+const AudioButton = () => {
+    const links = useScreen(state => state.resource?.Audio);
+    const isPlaying = useScreen(state => state.audio.playing);
+    const toggle = useScreen(state => state.audioPlayer.toggle);
+    const playButton = <PlayArrowIcon fontSize="large" color="primary" onClick={toggle} />;
+    const pauseIcon = <PauseIcon fontSize="large" color="primary" onClick={toggle} />;
+    const button = isPlaying ? pauseIcon : playButton;
+    
+    if (!links) {
+        return <></>;
+    }
     
     return <>
-        <button onClick={() => api.prev()}>PREV</button>
-        <button onClick={() => api.next()}>NEXT</button>
+        <StyledPlayButton>
+            {button}
+        </StyledPlayButton>
     </>;
 };
 
 export const Navigation = () => {
-    return <>
-        <AppBar position="static">
-            <Toolbar>
-                <Typography component="div" sx={{ flexGrow: 1 }}>
-                    <NavigationLabel />
-                    <NavigationPopup />
-                </Typography>
-            </Toolbar>
-        </AppBar>
-        
-        <Controller />
-    </>;
+    const api = useScreen(state => state.navigation);
+    
+    return <AppBar position="fixed" color="inherit" sx={{ top: "auto", bottom: 0 }}>
+        <Toolbar>
+            <IconButton onClick={api.prev}>
+                <SkipPreviousIcon fontSize="small" color="primary" />
+            </IconButton>
+            
+            <Box sx={{ flexGrow: 1 }} />
+            <AudioButton />
+            
+            <IconButton onClick={api.next}>
+                <SkipNextIcon fontSize="small" color="primary" />
+            </IconButton>
+        </Toolbar>
+    </AppBar>;
 };

@@ -14,6 +14,8 @@ export interface PlayerAPI {
 
 export const createPlayerAPI = (setter: ScreenSetter): PlayerAPI => {
     return {
-        toggle: () => setter(state => state),
+        toggle: () => setter(state => ({
+            audio: { ...state.audio, playing: !state.audio.playing },
+        })),
     };
 };
