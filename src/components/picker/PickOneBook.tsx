@@ -1,7 +1,7 @@
-import { useScreen } from "../../../store/store.screen";
+import { useScreen } from "../../store/store.screen";
 import { Button, Grid } from "@mui/material";
 import { useNavStore } from "./store";
-import { books } from "../../../store/books";
+import { books } from "../../store/books";
 
 export const PickOneBook = () => {
     const lang = useScreen(state => state.language);

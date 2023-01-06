@@ -1,10 +1,10 @@
 import shallow from "zustand/shallow";
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import BookIcon from "@mui/icons-material/Book";
-import { useScreen } from "../../../store/store.screen";
+import { useScreen } from "../../store/store.screen";
 import { useNavStore } from "./store";
 import { NavigationPopup } from "./NavigationPopup";
-import { books } from "../../../store/books";
+import { books } from "../../store/books";
 
 const NavigationLabel = () => {
     const location = useScreen(

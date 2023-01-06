@@ -43,3 +43,11 @@ export function selectLocation(state: Screen): Location {
         chapter: state.chapter,
     } as Location;
 }
+
+export function selectAudioURL(state: Screen): string | undefined {
+    const base = "https://kinhthanh.httlvn.org";
+    const raws = state.resource?.Audio || [];
+    const links = raws.map(link => base + link.replaceAll("\\", "/"));
+    
+    return links[0];
+}

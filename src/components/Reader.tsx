@@ -1,7 +1,7 @@
-import { useScreen } from "../../store/store.screen";
+import { useScreen } from "../store/store.screen";
 import shallow from "zustand/shallow";
 import React, { useEffect, useState } from "react";
-import { selectLocation } from "../../store/entities";
+import { selectLocation } from "../store/entities";
 import { Container } from "@mui/material";
 
 function ReadingContent(props: { loading: boolean }) {
@@ -13,7 +13,7 @@ function ReadingContent(props: { loading: boolean }) {
     }
     
     return <>
-        <Container style={{ padding: "20px", overflow: "hidden" }}>
+        <Container style={{ padding: "20px", paddingBottom: "120px", overflow: "auto" }}>
             {!content ? loading : <div dangerouslySetInnerHTML={{ __html: content }} />}
         </Container>
     </>;
@@ -26,7 +26,6 @@ export const Reader = () => {
     useEffect(
         () => {
             const done = () => setLoading(false);
-            
             const state = useScreen.getState();
             const loc = selectLocation(state);
             state.fetch(loc).then(() => done());
