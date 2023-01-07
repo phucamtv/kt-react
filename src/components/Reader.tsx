@@ -2,19 +2,49 @@ import { useScreen } from "../store/store.screen";
 import shallow from "zustand/shallow";
 import React, { useEffect, useState } from "react";
 import { selectLocation } from "../store/entities";
-import { Container } from "@mui/material";
+import { Container, Skeleton } from "@mui/material";
+
+function Loading() {
+    return <>
+        <Skeleton width={66} />
+        <Skeleton />
+        <Skeleton animation="wave" />
+        <Skeleton animation="pulse" />
+        <Skeleton animation={false} />
+        <Skeleton width={66} />
+        <Skeleton animation="wave" />
+        <Skeleton animation="pulse" />
+        <Skeleton animation={false} />
+        <Skeleton width={66} />
+        <Skeleton animation="wave" />
+        <Skeleton animation="pulse" />
+        <Skeleton animation={false} />
+        <Skeleton width={66} />
+        <Skeleton animation="wave" />
+        <Skeleton animation="pulse" />
+        <Skeleton animation={false} />
+        <Skeleton width={66} />
+        <Skeleton animation="wave" />
+        <Skeleton animation="pulse" />
+        <Skeleton animation={false} />
+        <Skeleton width={33} />
+    </>
+}
 
 function ReadingContent(props: { loading: boolean }) {
-    const loading = <div>loading…</div>;
     const content = useScreen(state => state.resource?.Content, shallow);
     
     if (props.loading) {
-        return loading;
+        return <>
+            <Container style={{ padding: "20px", paddingBottom: "120px", overflow: "auto" }}>
+                <Loading />
+            </Container>
+        </>;
     }
     
     return <>
         <Container style={{ padding: "20px", paddingBottom: "120px", overflow: "auto" }}>
-            {!content ? loading : <div dangerouslySetInnerHTML={{ __html: content }} />}
+            {!content ? <Loading /> : <div dangerouslySetInnerHTML={{ __html: content }} />}
         </Container>
     </>;
 }
