@@ -1,11 +1,15 @@
 import { useNavStore } from "./store";
-import { AppBar, Dialog, IconButton, Paper, Toolbar, Typography } from "@mui/material";
+import { AppBar, Container, Dialog, IconButton, Paper, Toolbar, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { PickOneBook } from "./PickOneBook";
 import { PickOneChapter } from "./PickOneChapter";
 import { useEffect } from "react";
 import shallow from "zustand/shallow";
 
+/**
+ * TODO: https://www.material.io/components/sheets-bottom#behavior
+ */
 export const NavigationPopup = () => {
     const active = useNavStore(state => state.isActive);
     
@@ -42,15 +46,17 @@ const NavigationPopupHeader = () => {
     
     const label = state.section == "BOOK" ? "Chọn sách" : "Chọn chương";
     
-    return <AppBar sx={{ position: "relative" }}>
+    return <AppBar sx={{ position: "relative" }} color={"inherit"}>
         <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="close" onClick={state.toggleActive}>
-                <CloseIcon />
-            </IconButton>
-            
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                {label}
-            </Typography>
+            <Container>
+                <IconButton edge="start" color="inherit" aria-label="close" onClick={state.toggleActive}>
+                    <KeyboardBackspaceIcon />
+                    
+                    <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                        {label}
+                    </Typography>
+                </IconButton>
+            </Container>
         </Toolbar>
     </AppBar>;
 };
@@ -60,8 +66,10 @@ const NavigationPopupContent = () => {
     const content = section == "BOOK" ? <PickOneBook /> : <PickOneChapter />;
     
     return <>
-        <Paper sx={{ maxWidth: "100%", padding: "1em" }} square>
-            {content}
-        </Paper>
+        <Container>
+            <Paper sx={{ maxWidth: "100%", padding: "1em" }} square>
+                {content}
+            </Paper>
+        </Container>
     </>;
 };

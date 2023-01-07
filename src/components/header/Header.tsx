@@ -1,10 +1,11 @@
 import shallow from "zustand/shallow";
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
-import BookIcon from "@mui/icons-material/Book";
+import { AppBar, Box, Container, ToggleButton, ToggleButtonGroup, Toolbar } from "@mui/material";
 import { useScreen } from "../../store/store.screen";
 import { useNavStore } from "./store";
 import { NavigationPopup } from "./NavigationPopup";
 import { books } from "../../store/books";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import React from "react";
 
 const NavigationLabel = () => {
     const location = useScreen(
@@ -21,19 +22,28 @@ const NavigationLabel = () => {
     const bookName = book.name.get(location.language);
     const toggleActive = useNavStore(state => state.toggleActive);
     
-    return <IconButton onClick={toggleActive} color="inherit">
-        <BookIcon /> {bookName} {location.chapter}
-    </IconButton>;
+    return <>
+        <ToggleButtonGroup size={"medium"}>
+            <ToggleButton value={"book"} onClick={toggleActive}>
+                {bookName} {location.chapter} <ArrowDropDownIcon />
+            </ToggleButton>
+            <ToggleButton value={"chapter"}>
+                {location.translation}
+            </ToggleButton>
+        </ToggleButtonGroup>
+    </>;
 };
 
-export const Picker = () => {
+export const Header = () => {
     return <>
-        <AppBar position="static">
+        <AppBar position="static" color={"transparent"}>
             <Toolbar>
-                <Typography component="div" sx={{ flexGrow: 1 }}>
+                <Container>
                     <NavigationLabel />
                     <NavigationPopup />
-                </Typography>
+                    
+                    {/*<Box sx={{ flexGrow: 1 }} />*/}
+                </Container>
             </Toolbar>
         </AppBar>
     </>;
