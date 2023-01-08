@@ -17,7 +17,10 @@ export const AudioStore = () => {
                 }),
                 ({ url, isPlaying }) => {
                     setPlaying(isPlaying);
-                    setUrl(url || "");
+                    
+                    if (isPlaying) {
+                        setUrl(url || "");
+                    }
                 },
                 { equalityFn: shallow },
             );
