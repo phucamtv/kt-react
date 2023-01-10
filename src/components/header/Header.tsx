@@ -46,7 +46,7 @@ export const Header = (props: Props) => {
                 </Toolbar>
             </AppBar>
         </HideOnScroll>
-    
+        
         <Toolbar />
     </>;
 };

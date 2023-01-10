@@ -7,6 +7,8 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import { Tab, Tabs } from "@mui/material";
+import { useState } from "react";
 
 export const PickOneBook = () => {
     const lang = useAppState(state => state.language);
@@ -17,6 +19,7 @@ export const PickOneBook = () => {
     const setChapter = useNavStore(state => state.setChapter);
     const reset = useNavStore(state => state.reset);
     const setLocation = useAppState(state => state.navigation.setLocation);
+    const [bookRange, setBookRange] = useState("ot");
     
     const chapterItems = !book ? <></> : chapters.map(i => {
         return <Button
@@ -38,6 +41,7 @@ export const PickOneBook = () => {
     
     const bookItems = Array
         .from(books.keys())
+        .filter(i => bookRange == "ot" ? i <= 39 : i >= 40)
         .map(i => {
             const book = books.get(i)!;
             const title = book.name.get(lang);
@@ -59,6 +63,16 @@ export const PickOneBook = () => {
     
     return <>
         <Grid container>
+            <Grid item md={12} xs={12}>
+                <Tabs
+                    value={bookRange}
+                    onChange={(e, value) => setBookRange(value)}
+                >
+                    <Tab value={"ot"} label="Cựu Ước" />
+                    <Tab value={"nt"} label="Tân Ước" />
+                </Tabs>
+            </Grid>
+            
             <Grid item md={10} xs={10}>
                 {bookItems}
             </Grid>
