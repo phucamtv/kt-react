@@ -1,14 +1,14 @@
 import shallow from "zustand/shallow";
-import { AppBar, Box, Container, ToggleButton, ToggleButtonGroup, Toolbar } from "@mui/material";
-import { useScreen } from "../../store/store.screen";
+import { AppBar, Container, ToggleButton, ToggleButtonGroup, Toolbar } from "@mui/material";
+import { useAppState } from "../app/store";
 import { useNavStore } from "./store";
 import { NavigationPopup } from "./NavigationPopup";
-import { books } from "../../store/books";
+import { books } from "../app/books";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import React from "react";
 
 const NavigationLabel = () => {
-    const location = useScreen(
+    const location = useAppState(
         state => ({
             language: state.language,
             translation: state.translation,
@@ -41,8 +41,6 @@ export const Header = () => {
                 <Container>
                     <NavigationLabel />
                     <NavigationPopup />
-                    
-                    {/*<Box sx={{ flexGrow: 1 }} />*/}
                 </Container>
             </Toolbar>
         </AppBar>

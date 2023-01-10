@@ -1,12 +1,12 @@
 import { AppBar, Box, Container, IconButton, Toolbar } from "@mui/material";
-import { useScreen } from "../../store/store.screen";
+import { useAppState } from "../app/store";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import React from "react";
 import { AudioPlayer } from "../player/AudioPlayer";
 
 export const Navigation = () => {
-    const api = useScreen(state => state.navigation);
+    const api = useAppState(state => state.navigation);
     
     return <AppBar position="fixed" color="default" sx={{ top: "auto", bottom: 0 }}>
         <Container>

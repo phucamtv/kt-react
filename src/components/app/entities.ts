@@ -20,7 +20,7 @@ export interface Location {
     verse: number;
 }
 
-export interface Screen extends Location {
+export interface AppState extends Location {
     version: number;
     picking: null | Location;
     audio: AudioContext;
@@ -31,11 +31,11 @@ export interface Screen extends Location {
 }
 
 export type ScreenSetter = (
-    partial: Screen | Partial<Screen> | ((state: Screen) => Screen | Partial<Screen>),
+    partial: AppState | Partial<AppState> | ((state: AppState) => AppState | Partial<AppState>),
     replace?: (boolean | undefined),
 ) => void;
 
-export function selectLocation(state: Screen): Location {
+export function selectLocation(state: AppState): Location {
     return {
         language: state.language,
         translation: state.translation,
@@ -44,7 +44,7 @@ export function selectLocation(state: Screen): Location {
     } as Location;
 }
 
-export function selectAudioURL(state: Screen): string | undefined {
+export function selectAudioURL(state: AppState): string | undefined {
     const base = "https://kinhthanh.httlvn.org";
     const raws = state.resource?.Audio || [];
     const links = raws.map(link => base + link.replaceAll("\\", "/"));

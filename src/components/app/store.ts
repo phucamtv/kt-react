@@ -1,12 +1,12 @@
-import { Language, Screen, ScreenSetter, Translation } from "./entities";
+import { Language, AppState, ScreenSetter, Translation } from "./entities";
 import { createPlayerAPI } from "./api.audio";
 import { createNavigationAPI } from "./api.navigate";
 import create from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import { fetchAPI } from "./api.fetch";
 
-export const createScreen = (set: ScreenSetter): Screen => {
-    const props: Partial<Screen> = {
+export const createAppState = (set: ScreenSetter): AppState => {
+    const props: Partial<AppState> = {
         translation: Translation.VI1934,
         language: Language.VI,
         book: 1,
@@ -27,9 +27,9 @@ export const createScreen = (set: ScreenSetter): Screen => {
         navigation: createNavigationAPI(set),
         audioPlayer: createPlayerAPI(set),
         fetch: fetchAPI(set),
-    } as Screen;
+    } as AppState;
 };
 
-export const useScreen = create<Screen>()(
-    subscribeWithSelector(set => createScreen(set)),
+export const useAppState = create<AppState>()(
+    subscribeWithSelector(set => createAppState(set)),
 );
