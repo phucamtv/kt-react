@@ -9,7 +9,6 @@ import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { PickOneBook } from "./PickOneBook";
-import { PickOneChapter } from "./PickOneChapter";
 import { useNavStore } from "./store";
 
 /**
@@ -45,11 +44,10 @@ export const NavigationPopup = () => {
 
 const NavigationPopupHeader = () => {
     const state = useNavStore(state => ({
-        section: state.section,
         toggleActive: state.toggleActive,
     }));
     
-    const label = state.section == "BOOK" ? "Chọn sách" : "Chọn chương";
+    const label = "Chọn chương";
     
     return <AppBar sx={{ position: "relative" }} color={"inherit"}>
         <Toolbar>
@@ -67,8 +65,7 @@ const NavigationPopupHeader = () => {
 };
 
 const NavigationPopupContent = () => {
-    const section = useNavStore(state => state.section);
-    const content = section == "BOOK" ? <PickOneBook /> : <PickOneChapter />;
+    const content = <PickOneBook />;
     
     return <>
         <Container>

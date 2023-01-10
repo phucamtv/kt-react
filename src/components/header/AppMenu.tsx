@@ -11,8 +11,8 @@ export const AppMenu = () => {
     const [open, setOpen] = useState(false);
     
     return <>
-        <IconButton size="large" edge="start" color="inherit" aria-label="menu">
-            <MenuIcon onClick={() => setOpen(!open)} />
+        <IconButton size="large" edge="start" color="inherit" aria-label="menu" onClick={() => setOpen(!open)}>
+            <MenuIcon />
         </IconButton>
         
         <Dialog open={open} fullWidth={true} maxWidth={"sm"}>
@@ -29,6 +29,7 @@ export const AppMenu = () => {
             >
                 <AudioPanel />
             </Box>
+            
             <DialogActions>
                 <Button onClick={() => setOpen(!open)}>Done</Button>
             </DialogActions>

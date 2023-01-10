@@ -44,11 +44,10 @@ export const Header = () => {
         <AppBar position="static" color={"transparent"}>
             <Toolbar>
                 <Container style={{ display: "flex" }}>
-                    <Typography color="inherit" style={{ flex: 1 }}>
+                    <Typography component={"div"} color="inherit" style={{ flex: 1 }}>
                         <NavigationLabel />
                         <NavigationPopup />
                     </Typography>
-                    
                     <AppMenu />
                 </Container>
             </Toolbar>
