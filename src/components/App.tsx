@@ -4,7 +4,7 @@ import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AudioStore } from "./player/AudioStore";
 import { Header } from "./header/Header";
-import { AudioPanel } from "./player/AudioPanel";
+import { AudioPanel } from "./player/control-panel/AudioPanel";
 
 // https://m2.material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=4E342E&secondary.color=D7CCC8
 const theme = createTheme({
@@ -28,8 +28,8 @@ export default () => {
     return <>
         <ThemeProvider theme={theme}>
             <Header />
-    
-            { done && <AudioPanel />}
+            
+            {done && <AudioPanel />}
             
             <Reader />
             <Navigation />
