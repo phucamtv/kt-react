@@ -21,10 +21,10 @@ const theme = createTheme({
     },
 });
 
-export default () => {
+export default (props: any) => {
     return <>
         <ThemeProvider theme={theme}>
-            <Header />
+            <Header {...props} />
             <Reader />
             <Navigation />
             <AudioStore />

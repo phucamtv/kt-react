@@ -1,56 +1,52 @@
-import shallow from "zustand/shallow";
-import { useAppState } from "../app/store";
-import { useNavStore } from "./store";
 import { NavigationPopup } from "./NavigationPopup";
-import { books } from "../app/books";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Toolbar from "@mui/material/Toolbar";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import ToggleButton from "@mui/material/ToggleButton";
 import Container from "@mui/material/Container";
 import AppBar from "@mui/material/AppBar";
 import { AppMenu } from "./AppMenu";
 import Typography from "@mui/material/Typography";
+import { NavigationLabel } from "./NavigationLabel";
+import CssBaseline from "@mui/material/CssBaseline";
+import Slide from "@mui/material/Slide";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
 
-const NavigationLabel = () => {
-    const location = useAppState(
-        state => ({
-            language: state.language,
-            translation: state.translation,
-            book: state.book,
-            chapter: state.chapter,
-        }),
-        shallow,
+
+interface Props {
+    window?: () => Window;
+    children: React.ReactElement;
+}
+
+function HideOnScroll(props: Props) {
+    const { children, window } = props;
+    
+    const trigger = useScrollTrigger({
+        // target: window ? window() : undefined,
+        target: undefined,
+    });
+    
+    return (
+        <Slide appear={false} direction="down" in={!trigger}>
+            {children}
+        </Slide>
     );
-    
-    const book = books.get(location.book)!;
-    const bookName = book.name.get(location.language);
-    const toggleActive = useNavStore(state => state.toggleActive);
-    
-    return <>
-        <ToggleButtonGroup size={"medium"}>
-            <ToggleButton value={"book"} onClick={toggleActive}>
-                {bookName} {location.chapter} <ArrowDropDownIcon />
-            </ToggleButton>
-            <ToggleButton value={"chapter"}>
-                {location.translation}
-            </ToggleButton>
-        </ToggleButtonGroup>
-    </>;
-};
+}
 
-export const Header = () => {
+export const Header = (props: Props) => {
     return <>
-        <AppBar position="static" color={"transparent"}>
-            <Toolbar>
-                <Container style={{ display: "flex" }}>
-                    <Typography component={"div"} color="inherit" style={{ flex: 1 }}>
-                        <NavigationLabel />
-                        <NavigationPopup />
-                    </Typography>
-                    <AppMenu />
-                </Container>
-            </Toolbar>
-        </AppBar>
+        <CssBaseline />
+        <HideOnScroll {...props}>
+            <AppBar color={"default"}>
+                <Toolbar>
+                    <Container style={{ display: "flex" }}>
+                        <Typography component={"div"} color="inherit" style={{ flex: 1 }}>
+                            <NavigationLabel />
+                            <NavigationPopup />
+                        </Typography>
+                        <AppMenu />
+                    </Container>
+                </Toolbar>
+            </AppBar>
+        </HideOnScroll>
+    
+        <Toolbar />
     </>;
 };
