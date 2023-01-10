@@ -1,7 +1,8 @@
 import { useAppState } from "../app/store";
 import { useNavStore } from "./store";
-import { Button, Grid } from "@mui/material";
 import { books } from "../app/books";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
 export const PickOneChapter = () => {
     const lang = useAppState(state => state.language);

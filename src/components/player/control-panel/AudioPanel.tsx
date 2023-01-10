@@ -1,12 +1,11 @@
-import { Box, Container, Grid, IconButton } from "@mui/material";
 import React from "react";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import LoopIcon from "@mui/icons-material/Loop";
-import SlowMotionVideoIcon from "@mui/icons-material/SlowMotionVideo";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import { useAudioPanelState } from "./state";
 import { PlayerOptions } from "./PlayerOptions";
 

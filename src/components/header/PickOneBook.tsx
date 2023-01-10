@@ -1,5 +1,6 @@
 import { useAppState } from "../app/store";
-import { Button, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import { useNavStore } from "./store";
 import { books } from "../app/books";
 

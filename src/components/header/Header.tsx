@@ -1,11 +1,17 @@
 import shallow from "zustand/shallow";
-import { AppBar, Container, ToggleButton, ToggleButtonGroup, Toolbar } from "@mui/material";
 import { useAppState } from "../app/store";
 import { useNavStore } from "./store";
 import { NavigationPopup } from "./NavigationPopup";
 import { books } from "../app/books";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import React from "react";
+import Toolbar from "@mui/material/Toolbar";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import AppBar from "@mui/material/AppBar";
+import Grid from "@mui/material/Grid";
 
 const NavigationLabel = () => {
     const location = useAppState(
@@ -39,8 +45,18 @@ export const Header = () => {
         <AppBar position="static" color={"transparent"}>
             <Toolbar>
                 <Container>
-                    <NavigationLabel />
-                    <NavigationPopup />
+                    <Grid container justifyContent={"space-between"} columnSpacing={24} spacing={0}>
+                        <Grid item xs={9}>
+                            <NavigationLabel />
+                            <NavigationPopup />
+                        </Grid>
+                        
+                        <Grid item xs={2}>
+                            <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+                                <MenuIcon />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
                 </Container>
             </Toolbar>
         </AppBar>

@@ -1,25 +1,41 @@
 import ReactPlayer from "react-player";
 import shallow from "zustand/shallow";
 import { useEffect, useState } from "react";
-import { useScreen } from "../../store/store.screen";
-import { selectAudioURL } from "../../store/entities";
+import { useAppState } from "../app/store";
+import { AppState, selectAudioURL } from "../app/entities";
+
+type PlayingState = {
+    url: string,
+    isPlaying: boolean,
+    speed: number,
+}
+
+const selectPlayingState = (state: AppState): PlayingState => ({
+    url: selectAudioURL(state),
+    isPlaying: state.audio.playing,
+    speed: state.audio.speed,
+} as PlayingState);
 
 export const AudioStore = () => {
     const [playing, setPlaying] = useState(false);
+    const [speed, setSpeed] = useState(1);
     const [url, setUrl] = useState("");
     
     useEffect(
         () => {
-            useScreen.subscribe(
-                state => ({
-                    url: selectAudioURL(state),
-                    isPlaying: state.audio.playing,
-                }),
-                ({ url, isPlaying }) => {
-                    setPlaying(isPlaying);
+            useAppState.subscribe(
+                selectPlayingState,
+                (state, prev) => {
+                    if (state.isPlaying) {
+                        setUrl(state.url || "");
+                    }
                     
-                    if (isPlaying) {
-                        setUrl(url || "");
+                    if (state.isPlaying != prev.isPlaying) {
+                        setPlaying(state.isPlaying);
+                    }
+                    
+                    if (state.speed != prev.speed) {
+                        setSpeed(state.speed);
                     }
                 },
                 { equalityFn: shallow },
@@ -28,7 +44,7 @@ export const AudioStore = () => {
         [],
     );
     
-    console.log({ PlayerStore: { playing, url } });
+    console.log({ PlayerStore: { playing, url, speed } });
     
     return <>
         <div style={{ display: "none" }}>
@@ -38,6 +54,7 @@ export const AudioStore = () => {
                 playing={playing}
                 url={url}
                 onError={err => console.log({ onError: err })}
+                playbackRate={speed}
             />
         </div>
     </>;

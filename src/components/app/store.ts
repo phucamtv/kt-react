@@ -9,8 +9,8 @@ export const createAppState = (set: ScreenSetter): AppState => {
     const props: Partial<AppState> = {
         translation: Translation.VI1934,
         language: Language.VI,
-        book: 1,
-        chapter: 1,
+        book: 19,
+        chapter: 119,
         verse: 1,
         audio: {
             playing: false,
