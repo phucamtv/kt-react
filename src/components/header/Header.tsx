@@ -1,14 +1,19 @@
 import shallow from "zustand/shallow";
-import { AppBar, Box, Container, ToggleButton, ToggleButtonGroup, Toolbar } from "@mui/material";
-import { useScreen } from "../../store/store.screen";
+import { useAppState } from "../app/store";
 import { useNavStore } from "./store";
 import { NavigationPopup } from "./NavigationPopup";
-import { books } from "../../store/books";
+import { books } from "../app/books";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import React from "react";
+import Toolbar from "@mui/material/Toolbar";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton";
+import Container from "@mui/material/Container";
+import AppBar from "@mui/material/AppBar";
+import Grid from "@mui/material/Grid";
+import { AppMenu } from "./AppMenu";
 
 const NavigationLabel = () => {
-    const location = useScreen(
+    const location = useAppState(
         state => ({
             language: state.language,
             translation: state.translation,
@@ -39,10 +44,16 @@ export const Header = () => {
         <AppBar position="static" color={"transparent"}>
             <Toolbar>
                 <Container>
-                    <NavigationLabel />
-                    <NavigationPopup />
-                    
-                    {/*<Box sx={{ flexGrow: 1 }} />*/}
+                    <Grid container justifyContent={"space-between"} columnSpacing={24} spacing={0}>
+                        <Grid item xs={9}>
+                            <NavigationLabel />
+                            <NavigationPopup />
+                        </Grid>
+                        
+                        <Grid item xs={2}>
+                            <AppMenu />
+                        </Grid>
+                    </Grid>
                 </Container>
             </Toolbar>
         </AppBar>

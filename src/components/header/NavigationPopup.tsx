@@ -1,11 +1,16 @@
-import { useNavStore } from "./store";
-import { AppBar, Container, Dialog, IconButton, Paper, Toolbar, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { useEffect } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import shallow from "zustand/shallow";
+import AppBar from "@mui/material/AppBar";
+import Container from "@mui/material/Container";
+import Dialog from "@mui/material/Dialog";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { PickOneBook } from "./PickOneBook";
 import { PickOneChapter } from "./PickOneChapter";
-import { useEffect } from "react";
-import shallow from "zustand/shallow";
+import { useNavStore } from "./store";
 
 /**
  * TODO: https://www.material.io/components/sheets-bottom#behavior

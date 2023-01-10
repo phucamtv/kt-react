@@ -1,10 +1,10 @@
-import { useScreen } from "../../store/store.screen";
+import { useAppState } from "../app/store";
 import React from "react";
 import shallow from "zustand/shallow";
 import { PauseButton, PlayButton } from "./PlayButton";
 
 export const AudioPlayer = () => {
-    const state = useScreen(
+    const state = useAppState(
         state => ({
             isPlaying: state.audio.playing,
             toggle: state.audioPlayer.toggle,
