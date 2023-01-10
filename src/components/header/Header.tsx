@@ -7,11 +7,10 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Toolbar from "@mui/material/Toolbar";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import AppBar from "@mui/material/AppBar";
 import Grid from "@mui/material/Grid";
+import { AppMenu } from "./AppMenu";
 
 const NavigationLabel = () => {
     const location = useAppState(
@@ -52,9 +51,7 @@ export const Header = () => {
                         </Grid>
                         
                         <Grid item xs={2}>
-                            <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-                                <MenuIcon />
-                            </IconButton>
+                            <AppMenu />
                         </Grid>
                     </Grid>
                 </Container>

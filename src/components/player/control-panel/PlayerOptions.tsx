@@ -1,19 +1,32 @@
-import { Box, Grid, IconButton, Menu, MenuItem } from "@mui/material";
+import React from "react";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import SlowMotionVideoIcon from "@mui/icons-material/SlowMotionVideo";
 import LoopIcon from "@mui/icons-material/Loop";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import React from "react";
 import { useAppState } from "../../app/store";
+
+const config = {
+    options: {
+        buttonToggle: false,
+        speed: true,
+        loop: false,
+        timer: false,
+    },
+};
 
 export const PlayerOptions = () => {
     return <>
         <Box display="flex" justifyContent="center" style={{ minHeight: "7vh" }}>
             <Grid container>
-                <ButtonToggleOption />
-                <SpeedOption />
-                <LoopOptions />
-                <TimerOption />
+                {config.options.buttonToggle && <ButtonToggleOption />}
+                {config.options.speed && <SpeedOption />}
+                {config.options.loop && <LoopOptions />}
+                {config.options.timer && <TimerOption />}
             </Grid>
         </Box>
     </>;
@@ -47,14 +60,14 @@ const SpeedOption = () => {
         return () => {
             handleClose();
             setter(value);
-        }
+        };
     };
     
     return <Grid item xs={3} display={"flex"} justifyContent={"center"}>
         <IconButton
-            aria-controls={open ? 'basic-menu' : undefined}
+            aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
+            aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
         >
             <SlowMotionVideoIcon /> {value}x
@@ -66,7 +79,7 @@ const SpeedOption = () => {
             open={open}
             onClose={handleClose}
             MenuListProps={{
-                'aria-labelledby': 'basic-button',
+                "aria-labelledby": "basic-button",
             }}
         >
             <MenuItem onClick={onClick(0.75)}>0.75x</MenuItem>
