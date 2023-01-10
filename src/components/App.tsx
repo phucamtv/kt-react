@@ -1,4 +1,4 @@
-import { Reader } from "./Reader";
+import { Reader } from "./reader/Reader";
 import { Navigation } from "./navigation/Navigation";
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
