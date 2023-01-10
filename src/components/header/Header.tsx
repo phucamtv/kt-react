@@ -9,8 +9,8 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import Container from "@mui/material/Container";
 import AppBar from "@mui/material/AppBar";
-import Grid from "@mui/material/Grid";
 import { AppMenu } from "./AppMenu";
+import Typography from "@mui/material/Typography";
 
 const NavigationLabel = () => {
     const location = useAppState(
@@ -43,17 +43,13 @@ export const Header = () => {
     return <>
         <AppBar position="static" color={"transparent"}>
             <Toolbar>
-                <Container>
-                    <Grid container justifyContent={"space-between"} columnSpacing={24} spacing={0}>
-                        <Grid item xs={9}>
-                            <NavigationLabel />
-                            <NavigationPopup />
-                        </Grid>
-                        
-                        <Grid item xs={2}>
-                            <AppMenu />
-                        </Grid>
-                    </Grid>
+                <Container style={{ display: "flex" }}>
+                    <Typography color="inherit" style={{ flex: 1 }}>
+                        <NavigationLabel />
+                        <NavigationPopup />
+                    </Typography>
+                    
+                    <AppMenu />
                 </Container>
             </Toolbar>
         </AppBar>

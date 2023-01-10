@@ -1,0 +1,16 @@
+div.title i {
+    display: block;
+    line-height: 2.4em;
+}
+
+span.verse {
+    line-height: 1.7em;
+}
+
+sup {
+    font-size: 66%;
+}
+
+span.verse a {
+    display: none;
+}

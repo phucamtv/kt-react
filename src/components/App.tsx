@@ -2,8 +2,8 @@ import { Reader } from "./reader/Reader";
 import { Navigation } from "./navigation/Navigation";
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { AudioStore } from "./player/AudioStore";
 import { Header } from "./header/Header";
+import { AudioStore } from "./player/AudioStore";
 
 // https://m2.material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=4E342E&secondary.color=D7CCC8
 const theme = createTheme({

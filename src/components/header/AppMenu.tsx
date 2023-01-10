@@ -11,7 +11,7 @@ export const AppMenu = () => {
     const [open, setOpen] = useState(false);
     
     return <>
-        <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+        <IconButton size="large" edge="start" color="inherit" aria-label="menu">
             <MenuIcon onClick={() => setOpen(!open)} />
         </IconButton>
         
