@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import SlowMotionVideoIcon from "@mui/icons-material/SlowMotionVideo";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useAppState } from "../../app/store";
-import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import RepeatOneIcon from "@mui/icons-material/RepeatOne";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { LoopMode } from "../../app/api.audio";
+import { ListItemIcon, ListItemText } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const config = {
     options: {
@@ -23,22 +22,10 @@ const config = {
 
 export const PlayerOptions = () => {
     return <>
-        <Box display="flex" justifyContent="center" style={{ minHeight: "7vh" }}>
-            <Grid container columns={12}>
-                {config.options.buttonToggle && <ButtonToggleOption />}
-                <Grid item columns={3}>
-                    <SpeedOption />
-                </Grid>
-                
-                <Grid item columns={3}>
-                    {config.options.loop && <LoopOptions />}
-                </Grid>
-                
-                <Grid item columns={3}>
-                    {config.options.timer && <TimerOption />}
-                </Grid>
-            </Grid>
-        </Box>
+        {/*{config.options.buttonToggle && <ButtonToggleOption />}*/}
+        <SpeedOption />
+        {config.options.loop && <LoopOptions />}
+        {config.options.timer && <TimerOption />}
     </>;
 };
 
@@ -52,90 +39,66 @@ const ButtonToggleOption = () => {
 };
 
 const SpeedOption = () => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
-    const handleClose = () => setAnchorEl(null);
-    
     const setter = useAppState(state => state.audioPlayer.setSpeed);
     const value = useAppState(state => state.audio.speed);
-    const onClick = (value: number) => {
-        return () => {
-            handleClose();
-            setter(value);
-        };
+    const [open, setOpen] = useState(false);
+    const onClick = (value: number) => () => {
+        setter(value);
+        setOpen(false);
     };
     
-    return <Box display={"flex"} justifyContent={"center"}>
-        <IconButton
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-        >
-            <SlowMotionVideoIcon /> Tốc độ {value}x
-        </IconButton>
+    return <>
+        <MenuItem onClick={() => setOpen(!open)}>
+            <ListItemIcon><SlowMotionVideoIcon /></ListItemIcon>
+            <ListItemText>Tốc độ </ListItemText>
+            <Typography variant="body2" color="text.secondary">{value}x</Typography>
+        </MenuItem>
         
-        <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{ "aria-labelledby": "basic-button" }}
-        >
-            <MenuItem onClick={onClick(0.75)}>0.75x</MenuItem>
-            <MenuItem onClick={onClick(1)}>1x</MenuItem>
-            <MenuItem onClick={onClick(1.25)}>1.25x</MenuItem>
-            <MenuItem onClick={onClick(1.5)}>1.5x</MenuItem>
-            <MenuItem onClick={onClick(2)}>2x</MenuItem>
-        </Menu>
-    </Box>;
+        {open && <>
+			<MenuItem onClick={onClick(0.75)}><ListItemText inset>0.75x</ListItemText></MenuItem>
+			<MenuItem onClick={onClick(1)}><ListItemText inset>1x</ListItemText></MenuItem>
+			<MenuItem onClick={onClick(1.25)}><ListItemText inset>1.25x</ListItemText></MenuItem>
+			<MenuItem onClick={onClick(1.5)}><ListItemText inset>1.5x</ListItemText></MenuItem>
+			<MenuItem onClick={onClick(2)}><ListItemText inset>2x</ListItemText></MenuItem>
+		</>}
+    </>;
 };
 
 const LoopOptions = () => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
-    const handleClose = () => setAnchorEl(null);
+    const [open, setOpen] = useState(false);
     const setter = useAppState(state => state.audioPlayer.setLoopMode);
     const value = useAppState(state => state.audio.loop);
-    
-    const onClick = (value: LoopMode) => {
-        return () => {
-            handleClose();
-            setter(value);
-        };
+    const onClick = (value: LoopMode) => () => {
+        setter(value);
+        setOpen(false);
     };
-    
-    const maps = new Map<LoopMode, React.ReactElement>([
-        ["NO", <span><NotInterestedIcon /> Không lặp</span>],
-        ["CHAPTER", <span><RepeatOneIcon /> Lặp lại chương</span>],
-        ["BOOK", <span><RestartAltIcon /> Lặp lại sách</span>],
+    const labels = new Map<LoopMode, string>([
+        ["NO", "Không lặp"],
+        ["CHAPTER", "Lặp chương"],
+        ["BOOK", "Lặp sách"],
     ]);
     
-    return <Box display={"flex"} justifyContent={"center"}>
-        <IconButton
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-        >
-            { maps.get(value) }
-        </IconButton>
+    return <>
+        <MenuItem onClick={() => setOpen(!open)}>
+            <ListItemIcon><RepeatOneIcon /></ListItemIcon>
+            <ListItemText>Lặp lại</ListItemText>
+            <Typography variant="body2" color="text.secondary">
+                {labels.get(value)}
+            </Typography>
+        </MenuItem>
         
-        <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{ "aria-labelledby": "basic-button" }}
-        >
-            <MenuItem onClick={onClick("NO")}>{maps.get("NO")}</MenuItem>
-            <hr />
-            <MenuItem onClick={onClick("CHAPTER")}>{maps.get("CHAPTER")}</MenuItem>
-            <MenuItem onClick={onClick("BOOK")}>{maps.get("BOOK")}</MenuItem>
-        </Menu>
-    </Box>;
+        {open && <>
+			<MenuItem onClick={onClick("NO")}>
+				<ListItemText inset>{labels.get("NO")}</ListItemText>
+			</MenuItem>
+			<MenuItem onClick={onClick("CHAPTER")}>
+				<ListItemText inset>{labels.get("CHAPTER")}</ListItemText>
+			</MenuItem>
+			<MenuItem onClick={onClick("BOOK")}>
+				<ListItemText inset>{labels.get("BOOK")}</ListItemText>
+			</MenuItem>
+		</>}
+    </>;
 };
 
 const TimerOption = () => {
