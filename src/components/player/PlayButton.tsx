@@ -13,14 +13,14 @@ const StyledPlayButton = styled(Fab)({
     margin: "0 auto",
 });
 
-export const PlayButton = (props: { toggle: () => void  }) => {
-    return <StyledPlayButton>
-        <PlayArrowIcon fontSize="large" color="primary" onClick={props.toggle} />
-    </StyledPlayButton>
-}
+export const PlayButton = (props: { toggle: () => void }) => {
+    return <StyledPlayButton onClick={props.toggle}>
+        <PlayArrowIcon fontSize="large" color="primary" />
+    </StyledPlayButton>;
+};
 
-export const PauseButton = (props: { toggle: () => void  }) => {
-    return <StyledPlayButton>
-        <PauseIcon fontSize="large" color="primary" onClick={props.toggle} />
-    </StyledPlayButton>
-}
+export const PauseButton = (props: { toggle: () => void }) => {
+    return <StyledPlayButton onClick={props.toggle}>
+        <PauseIcon fontSize="large" color="primary" />
+    </StyledPlayButton>;
+};

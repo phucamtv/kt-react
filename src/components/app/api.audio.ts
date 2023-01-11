@@ -1,6 +1,6 @@
 import { ScreenSetter } from "./entities";
 
-type LoopMode = "NO" | "CHAPTER" | "BOOK";
+export type LoopMode = "NO" | "CHAPTER" | "BOOK";
 
 export type AudioContext = {
     playing: boolean,

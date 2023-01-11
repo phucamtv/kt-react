@@ -1,4 +1,4 @@
-import { Language, AppState, ScreenSetter, Translation } from "./entities";
+import { AppState, Language, ScreenSetter, Translation } from "./entities";
 import { createPlayerAPI } from "./api.audio";
 import { createNavigationAPI } from "./api.navigate";
 import create from "zustand";
@@ -17,7 +17,7 @@ export const createAppState = (set: ScreenSetter): AppState => {
             speed: 1,
             volume: 100,
             percent: 0,
-            loop: "NO",
+            loop: "CHAPTER",
         },
         picking: null,
     };
