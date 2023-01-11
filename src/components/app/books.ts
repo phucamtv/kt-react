@@ -182,7 +182,7 @@ const viDict = new Map<string, string>([
     ["MAC", "Mác"],
     ["LU", "Lu-ca"],
     ["GI", "Giăng"],
-    ["CONG", "Công vụ các Sứ-đồ"],
+    ["CONG", "Công vụ"],
     ["RO", "Rô-ma"],
     ["1CO", "I Cô-rinh-tô"],
     ["2CO", "II Cô-rinh-tô"],

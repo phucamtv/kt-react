@@ -1,4 +1,4 @@
-import { Language, AppState, ScreenSetter, Translation } from "./entities";
+import { AppState, Language, ScreenSetter, Translation } from "./entities";
 import { createPlayerAPI } from "./api.audio";
 import { createNavigationAPI } from "./api.navigate";
 import create from "zustand";

@@ -55,6 +55,7 @@ export const AudioStore = () => {
                 url={url}
                 onError={err => console.log({ onError: err })}
                 playbackRate={speed}
+                loop={true}
             />
         </div>
     </>;
