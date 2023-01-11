@@ -17,7 +17,7 @@ export const createAppState = (set: ScreenSetter): AppState => {
             speed: 1,
             volume: 100,
             percent: 0,
-            loop: "NO",
+            loop: "CHAPTER",
         },
         picking: null,
     };

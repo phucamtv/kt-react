@@ -17,8 +17,13 @@ const selectPlayingState = (state: AppState): PlayingState => ({
 } as PlayingState);
 
 export const AudioStore = () => {
+    const config = useAppState(state => ({
+        speed: state.audio.speed,
+        loop: state.audio.loop,
+    }));
+    
     const [playing, setPlaying] = useState(false);
-    const [speed, setSpeed] = useState(1);
+    const [speed, setSpeed] = useState(config.speed);
     const [url, setUrl] = useState("");
     
     useEffect(
@@ -47,15 +52,31 @@ export const AudioStore = () => {
     console.log({ PlayerStore: { playing, url, speed } });
     
     return <>
-        <div style={{ display: "none" }}>
-            <pre>{JSON.stringify({ playing, url })}</pre>
-            
+        <div>
             <ReactPlayer
                 playing={playing}
                 url={url}
-                onError={err => console.log({ onError: err })}
+                onError={err => setPlaying(false)}
+                onEnded={() => {
+                    const state = useAppState.getState();
+                    
+                    switch (state.audio.loop) {
+                        case "NO":
+                            state.audioPlayer.toggle();
+                            break;
+                        
+                        case "CHAPTER":
+                            state.audioPlayer.toggle();
+                            setTimeout(state.audioPlayer.toggle, 100);
+                            break;
+                        case "BOOK":
+                            // TODO
+                            state.navigation.next();
+                            break;
+                    }
+                }}
                 playbackRate={speed}
-                loop={true}
+                loop={false}
             />
         </div>
     </>;

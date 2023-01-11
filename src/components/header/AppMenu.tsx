@@ -31,7 +31,7 @@ export const AppMenu = () => {
             </Box>
             
             <DialogActions>
-                <Button onClick={() => setOpen(!open)}>Done</Button>
+                <Button onClick={() => setOpen(!open)}>Xong</Button>
             </DialogActions>
         </Dialog>
     </>;
