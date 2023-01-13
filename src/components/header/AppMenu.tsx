@@ -1,16 +1,8 @@
 import IconButton from "@mui/material/IconButton";
-import { AudioPanel } from "../player/control-panel/AudioPanel";
-import React, { useState } from "react";
-import Dialog from "@mui/material/Dialog";
-import { DialogActions, DialogTitle, ListItemIcon, ListItemText } from "@mui/material";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import React from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { LoopMode } from "../app/api.audio";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import SlowMotionVideoIcon from "@mui/icons-material/SlowMotionVideo";
-import RepeatOneIcon from "@mui/icons-material/RepeatOne";
 import { PlayerOptions } from "../player/control-panel/PlayerOptions";
 
 export const AppMenu = () => {
