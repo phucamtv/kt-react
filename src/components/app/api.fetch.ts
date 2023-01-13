@@ -9,8 +9,10 @@ export interface Resource {
     group: string
 }
 
+const baseUrl = "https://kt-static.phucam.tv";
+
 export const fetchAPI = (set: ScreenSetter) => async (loc: Location) => {
-    const url = `/resources/${loc.translation}/${loc.book.toString().padStart(2, "0")}/${loc.chapter.toString().padStart(2, "0")}.json`;
+    const url = baseUrl + `/${loc.translation}/${loc.book.toString().padStart(2, "0")}/${loc.chapter.toString().padStart(2, "0")}.json`;
     const resource = await fetch(url).then(response => response.json()) as Resource;
     
     console.log({ url, resource });
